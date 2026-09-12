@@ -1,0 +1,12 @@
+const {createCanvas, registerFont} = require('canvas');
+const path = require('path');
+const fd = 'C:\\Users\\Queiros\\.verdent\\skills\\canvas-design\\canvas-fonts';
+registerFont(path.join(fd, 'Jura-Light.ttf'), {family:'Jura Light'});
+registerFont(path.join(fd, 'GeistMono-Regular.ttf'), {family:'Geist Mono'});
+registerFont(path.join(fd, 'PoiretOne-Regular.ttf'), {family:'Poiret One'});
+registerFont(path.join(fd, 'InstrumentSans-Regular.ttf'), {family:'Instrument Sans'});
+const c = createCanvas(200,200);
+const ctx = c.getContext('2d');
+ctx.font = '20px "Geist Mono"';
+ctx.fillText('test', 10, 50);
+console.log('done');
