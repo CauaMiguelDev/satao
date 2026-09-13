@@ -13,18 +13,28 @@
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   <header class="topbar">
-    <a class="wordmark" href="#inicio" aria-label="Gilmar Satão, início">SATÃO<span>®</span></a>
+    <div class="scroll-progress" aria-hidden="true"><span data-progress></span></div>
+    <a class="wordmark" href="#inicio" aria-label="Gilmar Satão, início">
+      <span class="wordmark-name">SATÃO<span class="wordmark-reg">®</span></span>
+      <span class="wordmark-tag">Ceilândia · DF</span>
+    </a>
+    <div class="nav-scrim" data-scrim></div>
     <nav id="primary-nav" aria-label="Navegação principal">
-      <a href="#historia">História</a>
-      <a href="#legado">Legado</a>
-      <a href="#agenda">Agenda</a>
+      <a href="#historia"><span class="navlink-index" aria-hidden="true">01</span><span class="navlink-label">História</span><span class="navlink-sub">Da Ceilândia à OS-3S</span></a>
+      <a href="#legado"><span class="navlink-index" aria-hidden="true">02</span><span class="navlink-label">Legado</span><span class="navlink-sub">A rua tem voz</span></a>
+      <a href="#agenda"><span class="navlink-index" aria-hidden="true">03</span><span class="navlink-label">Agenda</span><span class="navlink-sub">Murais, oficinas e encontros</span></a>
+      <a class="nav-cta" href="#agenda"><span>Ver a agenda</span><span class="nav-cta-arrow" aria-hidden="true">↗</span></a>
+      <p class="nav-foot">Ceilândia · DF · Brasil</p>
     </nav>
     <div class="topbar-right">
+      <a class="topbar-action" href="#agenda">
+        <span>Ver agenda</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+      </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
-        <span></span>
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
         <span class="sr-only">Abrir menu</span>
       </button>
-      <a class="topbar-action" href="#agenda">VER AGENDA</a>
     </div>
   </header>
   <main id="conteudo">
