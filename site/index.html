@@ -38,14 +38,27 @@
     </div>
   </header>
   <main id="conteudo">
-    <section class="hero" id="inicio" aria-label="Vídeo de destaque">
-      <div class="hero-art">
-        <video class="hero-art-video" autoplay loop muted playsinline aria-hidden="true"
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-art" aria-hidden="true">
+        <video class="hero-art-video" autoplay loop muted playsinline
                poster="media/hero-still-2k.jpg" preload="auto">
           <source src="media/track-video-4k.mp4" type="video/mp4" media="(min-width: 1500px)" />
           <source src="media/track-video-2k.mp4" type="video/mp4" />
         </video>
       </div>
+      <div class="hero-inner">
+        <p class="hero-eyebrow">Grafite · Hip Hop · Brasília</p>
+        <h1 class="hero-title" id="hero-title">GILMAR<br />SATÃO</h1>
+        <p class="hero-lead">Da Ceilândia para os muros do DF — três décadas transformando o espaço público em arquivo vivo.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#agenda">Ver a agenda<svg class="button-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg></a>
+          <a class="button button-outline" href="#historia">Conhecer a história</a>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#historia" aria-label="Rolar para a próxima seção">
+        <span>ROLE</span>
+        <span class="hero-scroll-line" aria-hidden="true"></span>
+      </a>
     </section>
     <section class="ticker" aria-label="Pilares do trabalho de Satão">
       <div class="ticker-track">
@@ -80,9 +93,26 @@
         <article class="agenda-item reveal"><div class="agenda-date"><span>ARQ.</span><strong>2024</strong></div><div><p class="agenda-type">ENCONTRO</p><h3>GRAFFITTI COMVIDA</h3><p>Sol Nascente recebeu um encontro que celebrou três décadas de trajetória e reuniu artistas de diferentes estados.</p></div><span class="agenda-status">ARQUIVO</span></article>
       </div>
     </section>
-    <section class="closing"><div class="closing-spray" aria-hidden="true"></div><p class="reveal">A CIDADE É NOSSA TELA.</p><h2 class="reveal">SATÃO<br />EM MOVIMENTO.</h2><a class="button button-light reveal" href="#agenda">Acompanhar a agenda</a></section>
+    <section class="closing"><div class="closing-spray" aria-hidden="true"></div><p class="reveal">A CIDADE É NOSSA TELA.</p><h2 class="reveal">SATÃO<br />EM MOVIMENTO.</h2><a class="button button-light reveal" href="#agenda">Acompanhar a agenda<svg class="button-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg></a></section>
   </main>
-  <footer class="footer"><p>GILMAR SATÃO · GRAFITE &amp; CULTURA URBANA</p><p>CEILÂNDIA · DF · BRASIL</p></footer>
+  <footer class="footer">
+    <div class="footer-brand">
+      <a class="footer-mark" href="#inicio" aria-label="Gilmar Satão, voltar ao início">SATÃO<span>®</span></a>
+      <p>Grafite &amp; cultura urbana</p>
+    </div>
+    <nav class="footer-nav" aria-label="Navegação do rodapé">
+      <a href="#historia">História</a>
+      <a href="#legado">Legado</a>
+      <a href="#agenda">Agenda</a>
+    </nav>
+    <div class="footer-meta">
+      <p>Ceilândia · DF · Brasil</p>
+      <p>© 2026 Gilmar Satão</p>
+    </div>
+  </footer>
+  <button class="to-top" type="button" aria-label="Voltar ao topo" data-to-top>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+  </button>
   <script src="main.js"></script>
 </body>
 </html>

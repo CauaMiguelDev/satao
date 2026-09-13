@@ -20,8 +20,11 @@
   }
 
   var topbar = document.querySelector(".topbar");
+  var toTop = document.querySelector("[data-to-top]");
+  var footer = document.querySelector(".footer");
+  var footerInView = false;
 
-  /* ---- Condense on scroll + reading-progress bar ---- */
+  /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
   var progress = document.querySelector("[data-progress]");
   var ticking = false;
   function paintScroll() {
@@ -32,6 +35,7 @@
       var ratio = max > 0 ? Math.min(Math.max(y / max, 0), 1) : 0;
       progress.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
     }
+    if (toTop) toTop.classList.toggle("is-shown", y > window.innerHeight * 0.7 && !footerInView);
     ticking = false;
   }
   function onScroll() {
@@ -40,6 +44,18 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
   paintScroll();
+
+  if (toTop) {
+    toTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }
+  if (footer && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      footerInView = entries[0].isIntersecting;
+      paintScroll();
+    }, { threshold: 0 }).observe(footer);
+  }
 
   /* ---- Scrollspy: highlight the section in view ---- */
   var navLinks = Array.prototype.slice.call(
