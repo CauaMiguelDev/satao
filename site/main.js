@@ -1,23 +1,25 @@
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const revealItems = document.querySelectorAll(".reveal");
 
+const onScrollThrottled = (fn) => {
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; fn(); });
+    }
+  }, { passive: true });
+  fn();
+};
+
 const scrollProgress = document.querySelector(".scroll-progress");
 if (scrollProgress) {
-  let progressTicking = false;
-  const updateProgress = () => {
-    progressTicking = false;
+  onScrollThrottled(() => {
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
     const ratio = max > 0 ? doc.scrollTop / max : 0;
     scrollProgress.style.transform = `scaleX(${ratio})`;
-  };
-  window.addEventListener("scroll", () => {
-    if (!progressTicking) {
-      progressTicking = true;
-      requestAnimationFrame(updateProgress);
-    }
-  }, { passive: true });
-  updateProgress();
+  });
 }
 
 const magnets = document.querySelectorAll(".magnetic");
@@ -96,22 +98,13 @@ if (heroArt && sprayLayer && !reduceMotion) {
 
 const legacyWall = document.querySelector(".legacy-wall");
 if (legacyWall && !reduceMotion) {
-  let ticking = false;
-  const updateParallax = () => {
-    ticking = false;
+  onScrollThrottled(() => {
     const rect = legacyWall.getBoundingClientRect();
     const vh = window.innerHeight || 1;
     const progress = (rect.top + rect.height / 2 - vh / 2) / vh;
     const y = Math.max(-40, Math.min(40, progress * -60));
     legacyWall.style.setProperty("--parallax-y", `${y}px`);
-  };
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(updateParallax);
-    }
-  }, { passive: true });
-  updateParallax();
+  });
 }
 
 const topbar = document.querySelector(".topbar");
