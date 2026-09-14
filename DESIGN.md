@@ -1,0 +1,55 @@
+---
+name: Gilmar Satão — Muro em Movimento
+description: Uma experiência editorial de rua para contar a trajetória e a agenda de um pioneiro do grafite brasiliense.
+colors:
+  red: "#d91620"
+  red-deep: "#a80e17"
+  red-hot: "#ff5c5c"
+  ink: "#14090b"
+  ink-soft: "#281317"
+  paper: "#f2e8dd"
+  paper-muted: "#c8b4a7"
+typography:
+  display: "Archivo Black"
+  text: "Archivo"
+  utility: "Space Mono"
+---
+
+# Design System: Muro em Movimento
+
+## North Star
+
+O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e grande escala tipográfica. O vermelho é o campo que organiza a página; o preto-vinho dá peso e o papel quente cria pausa para leitura.
+
+## Layout
+
+- Hero assimétrico e imersivo: vídeo de fundo, scrim para leitura e uma manchete de grande escala ancorada embaixo.
+- Uma faixa cinética única articula os pilares culturais da página.
+- História organizada como leitura editorial; agenda organizada como lista, não como cartões de produto.
+- O mural da seção de legado e a explosão do encerramento são texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — não fotografias e não reproduções de obras do artista.
+
+## Motion
+
+- Revelações com `opacity` e `transform` ao entrar no campo de leitura.
+- A faixa textual tem um único movimento contínuo, com redução total em `prefers-reduced-motion`.
+- O momento autoral da página é a manchete do hero: as linhas assentam de um borrão (névoa de spray) para nitidez ao carregar.
+- Dentro do hero, o cursor (mouse) ou o toque (mobile) deixam um rastro breve de respingos — confinado à arte do hero, nunca sobre texto de leitura, e totalmente desativado em `prefers-reduced-motion`.
+- O mural de legado se desloca sutilmente (parallax contido) ao rolar a página.
+
+## Interaction
+
+- Botões sobem discretamente no hover e comprimem no toque.
+- Todos os links mantêm foco de teclado de alto contraste.
+- Datas ainda não confirmadas recebem o estado explícito “Em breve”.
+
+## Do's
+
+- Manter tipografia grande, compacta e assimétrica em títulos.
+- Usar o vermelho como estrutura, não como detalhe.
+- Atualizar agenda com fatos confirmados.
+
+## Don'ts
+
+- Não usar fotografia ou assinatura falsa do artista.
+- Não transformar a agenda em um conjunto de cards iguais.
+- Não adicionar efeitos de spray em loop ou animação que prejudique a leitura.
