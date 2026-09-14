@@ -23,6 +23,7 @@
   var toTop = document.querySelector("[data-to-top]");
   var footer = document.querySelector(".footer");
   var footerInView = false;
+  var heroInner = document.querySelector(".hero-inner");
 
   /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
   var progress = document.querySelector("[data-progress]");
@@ -36,6 +37,12 @@
       progress.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
     }
     if (toTop) toTop.classList.toggle("is-shown", y > window.innerHeight * 0.7 && !footerInView);
+    if (heroInner && !reduceMotion) {
+      var vh = window.innerHeight || 1;
+      var hp = Math.min(y / vh, 1);
+      heroInner.style.transform = "translateY(" + (hp * -64).toFixed(1) + "px)";
+      heroInner.style.opacity = Math.max(1 - hp * 1.15, 0).toFixed(3);
+    }
     ticking = false;
   }
   function onScroll() {
