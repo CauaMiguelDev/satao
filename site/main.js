@@ -8,8 +8,8 @@ if (scrollProgress) {
     progressTicking = false;
     const doc = document.documentElement;
     const max = doc.scrollHeight - doc.clientHeight;
-    const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-    scrollProgress.style.width = `${pct}%`;
+    const ratio = max > 0 ? doc.scrollTop / max : 0;
+    scrollProgress.style.transform = `scaleX(${ratio})`;
   };
   window.addEventListener("scroll", () => {
     if (!progressTicking) {
@@ -116,15 +116,18 @@ if (legacyWall && !reduceMotion) {
 
 const topbar = document.querySelector(".topbar");
 const navToggle = document.querySelector(".nav-toggle");
+const navToggleLabel = document.querySelector(".nav-toggle-label");
 const primaryNav = document.getElementById("primary-nav");
 if (topbar && navToggle && primaryNav) {
   const closeNav = () => {
     topbar.classList.remove("nav-open");
     navToggle.setAttribute("aria-expanded", "false");
+    if (navToggleLabel) navToggleLabel.textContent = "Abrir menu";
   };
   navToggle.addEventListener("click", () => {
     const isOpen = topbar.classList.toggle("nav-open");
     navToggle.setAttribute("aria-expanded", String(isOpen));
+    if (navToggleLabel) navToggleLabel.textContent = isOpen ? "Fechar menu" : "Abrir menu";
   });
   primaryNav.addEventListener("click", (event) => {
     if (event.target.tagName === "A") closeNav();

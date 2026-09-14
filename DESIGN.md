@@ -23,10 +23,10 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Layout
 
-- Hero assimétrico e imersivo: vídeo de fundo, scrim para leitura e uma manchete de grande escala ancorada embaixo.
+- Hero assimétrico e imersivo: textura de muro generativa de fundo, scrim para leitura e uma manchete de grande escala ancorada embaixo.
 - Uma faixa cinética única articula os pilares culturais da página.
-- História organizada como leitura editorial; agenda organizada como lista, não como cartões de produto.
-- O mural da seção de legado e a explosão do encerramento são texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — não fotografias e não reproduções de obras do artista.
+- História organizada como leitura editorial; agenda organizada como lista de cartões, não como grade de produto.
+- O fundo do hero, o mural da seção de legado e a explosão do encerramento são texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — não fotografias, não vídeo e não reproduções de obras do artista.
 
 ## Motion
 
