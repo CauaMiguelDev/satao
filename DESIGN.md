@@ -38,7 +38,9 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Interaction
 
-- Botões sobem discretamente no hover e comprimem no toque.
+- Botões sobem discretamente no hover e comprimem no toque; os CTAs principais (topo e encerramento) têm leve atração magnética ao cursor, desativada em `prefers-reduced-motion`.
+- Uma barra fina de progresso de leitura acompanha o scroll no topo da página.
+- Itens da agenda são cartões com borda e leve elevação no hover, não uma lista plana.
 - Todos os links mantêm foco de teclado de alto contraste.
 - Datas ainda não confirmadas recebem o estado explícito “Em breve”.
 
