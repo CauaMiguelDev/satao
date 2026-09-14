@@ -38,9 +38,11 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Interaction
 
-- Botões sobem discretamente no hover e comprimem no toque; os CTAs principais (topo e encerramento) têm leve atração magnética ao cursor, desativada em `prefers-reduced-motion`.
+- Botões e badges de status são pílulas (`border-radius:999px`), com um ícone SVG inline (seta, relógio, check) — nunca ícone de fonte ou biblioteca externa.
+- Botões sobem discretamente no hover, comprimem no toque, e revelam o ícone com um leve slide; os CTAs principais (topo e encerramento) têm leve atração magnética ao cursor, desativada em `prefers-reduced-motion`.
 - Uma barra fina de progresso de leitura acompanha o scroll no topo da página.
-- Itens da agenda são cartões com borda e leve elevação no hover, não uma lista plana.
+- Itens da agenda são cartões com borda e leve elevação no hover, não uma lista plana; o badge de status carrega um ícone (relógio para pendente, check para arquivado) para não depender só da cor.
+- O botão de menu mobile é circular, com fundo sutil no hover.
 - Todos os links mantêm foco de teclado de alto contraste.
 - Datas ainda não confirmadas recebem o estado explícito “Em breve”.
 
