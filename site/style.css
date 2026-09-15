@@ -112,3 +112,13 @@ body.nav-lock{overflow:hidden}
 .button-dark:hover,.button-dark:focus-visible{color:var(--paper);background:var(--ink);border-color:var(--ink)}
 .closing-actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-self:start}
 .footer-nav{flex-wrap:wrap}
+/* ===== Ícones & toques suaves ===== */
+.atuacao-icon{width:2.3rem;height:2.3rem;color:var(--red-hot);transition:transform .4s var(--ease)}
+@media (hover:hover) and (pointer:fine){.atuacao-card:hover .atuacao-icon{transform:scale(1.1) rotate(-4deg)}}
+.button-icon{width:1rem;height:1rem;flex:0 0 auto}
+.footer-ig{display:inline-flex;align-items:center;gap:.42rem}
+.footer-ig svg{width:.95rem;height:.95rem}
+.button{transition:background-color .28s var(--ease),color .28s var(--ease),border-color .28s var(--ease),transform .3s var(--ease)}
+.button:hover,.button:focus-visible{transform:scale(1.02)}
+.button:active{transform:scale(.99)}
+@media (prefers-reduced-motion:reduce){.button:hover,.button:focus-visible,.button:active{transform:none}}
