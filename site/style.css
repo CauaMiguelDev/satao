@@ -87,8 +87,8 @@ body.nav-lock{overflow:hidden}
 /* ===== Motion — clean & tasteful ===== */
 .hero-title{animation:none}
 .ht-word{display:block}
-@keyframes ht-rise{from{opacity:0;transform:translateY(.35em)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:no-preference){.ht-word{animation:ht-rise .7s var(--ease) both}.ht-word:nth-child(1){animation-delay:.24s}.ht-word:nth-child(2){animation-delay:.4s}}
+@keyframes ht-rise{0%{opacity:0;transform:translateY(.5em);filter:blur(14px)}60%{filter:blur(0)}100%{opacity:1;transform:none;filter:blur(0)}}
+@media (prefers-reduced-motion:no-preference){.ht-word{animation:ht-rise .9s var(--ease) both;will-change:transform,filter,opacity}.ht-word:nth-child(1){animation-delay:.26s}.ht-word:nth-child(2){animation-delay:.44s}}
 .agenda-item h3,.agenda-date strong{transition:transform .3s var(--ease),color .3s var(--ease)}
 @media (hover:hover) and (pointer:fine){.agenda-item:hover .agenda-date strong{color:var(--red-hot)}}
 /* ===== Atuação ===== */
@@ -141,3 +141,12 @@ body.nav-lock{overflow:hidden}
 .atuacao-head,.atuacao-grid{position:relative;z-index:1}
 .atuacao-glow{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(217,22,32,.2),transparent 66%)}
 @media (hover:hover) and (pointer:fine){.atuacao:hover .atuacao-glow{opacity:1}}
+/* ===== Cursor customizado (dot + anel) ===== */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;z-index:120;pointer-events:none;border-radius:50%;opacity:0}
+.cursor-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--red-hot);transition:opacity .35s var(--ease)}
+.cursor-ring{width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid rgba(242,232,221,.65);will-change:transform,width,height;transition:opacity .35s var(--ease),width .32s var(--ease),height .32s var(--ease),margin .32s var(--ease),background-color .32s var(--ease),border-color .32s var(--ease)}
+.cursor-ready .cursor-dot,.cursor-ready .cursor-ring{opacity:1}
+.cursor-hidden .cursor-dot,.cursor-hidden .cursor-ring{opacity:0}
+.cursor-ring.is-interactive{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(217,22,32,.12);border-color:var(--red-hot)}
+.cursor-ring.is-down{width:24px;height:24px;margin:-12px 0 0 -12px;border-color:var(--red-hot)}
+body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .atuacao-card,body.has-cursor .agenda-item,body.has-cursor .hero-scroll{cursor:none}

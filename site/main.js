@@ -48,6 +48,7 @@
   var topbar = document.querySelector(".topbar");
   var toTop = document.querySelector("[data-to-top]");
   var footer = document.querySelector(".footer");
+  var heroVideo = document.querySelector(".hero-art-video");
   var footerInView = false;
 
   /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
@@ -62,6 +63,10 @@
       progress.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
     }
     if (toTop) toTop.classList.toggle("is-shown", y > window.innerHeight * 0.7 && !footerInView);
+    if (heroVideo && !reduceMotion) {
+      var hp = Math.min(Math.max(y / window.innerHeight, 0), 1);
+      heroVideo.style.transform = "translateY(" + (hp * 3).toFixed(2) + "%) scale(" + (1 + hp * 0.1).toFixed(4) + ")";
+    }
     ticking = false;
   }
   function onScroll() {
@@ -163,5 +168,82 @@
       ty = ((e.clientY - r.top) / r.height) * 100;
       if (glowRAF === null) glowRAF = window.requestAnimationFrame(glowStep);
     });
+  }
+
+  /* ---- Custom cursor: exact dot + lerping ring ---- */
+  var finePointer = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var cDot = document.querySelector(".cursor-dot");
+  var cRing = document.querySelector(".cursor-ring");
+  if (cDot && cRing && finePointer && !reduceMotion) {
+    var root = document.documentElement;
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my, started = false;
+    var interactive = "a,button,[role=button],input,textarea,select,.atuacao-card,.agenda-item,.inline-link,.hero-scroll";
+
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      cDot.style.transform = "translate(" + mx + "px," + my + "px)";
+      if (!started) {
+        started = true;
+        document.body.classList.add("has-cursor");
+        root.classList.add("cursor-ready");
+      }
+      root.classList.remove("cursor-hidden");
+    }, { passive: true });
+
+    document.addEventListener("mouseleave", function () { root.classList.add("cursor-hidden"); });
+    document.addEventListener("mousedown", function () { cRing.classList.add("is-down"); });
+    document.addEventListener("mouseup", function () { cRing.classList.remove("is-down"); });
+    document.addEventListener("pointerover", function (e) {
+      if (e.target.closest && e.target.closest(interactive)) cRing.classList.add("is-interactive");
+    });
+    document.addEventListener("pointerout", function (e) {
+      if (!e.target.closest || !e.target.closest(interactive)) return;
+      var to = e.relatedTarget;
+      if (!to || !to.closest || !to.closest(interactive)) cRing.classList.remove("is-interactive");
+    });
+
+    var cursorLoop = function () {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      cRing.style.transform = "translate(" + rx.toFixed(2) + "px," + ry.toFixed(2) + "px)";
+      window.requestAnimationFrame(cursorLoop);
+    };
+    window.requestAnimationFrame(cursorLoop);
+  }
+
+  /* ---- Kinetic ticker: base drift + scroll-velocity boost ---- */
+  var ticker = document.querySelector(".ticker");
+  var track = document.querySelector(".ticker-track");
+  if (ticker && track && !reduceMotion) {
+    track.style.animation = "none";
+    track.style.willChange = "transform";
+    var half = track.scrollWidth / 2;
+    window.addEventListener("resize", function () { half = track.scrollWidth / 2; });
+
+    var pos = 0, base = 44, boost = 0, paused = false, last = null;
+    var prevY = window.scrollY || window.pageYOffset || 0;
+
+    if (window.matchMedia("(hover:hover)").matches) {
+      ticker.addEventListener("mouseenter", function () { paused = true; });
+      ticker.addEventListener("mouseleave", function () { paused = false; });
+    }
+    window.addEventListener("scroll", function () {
+      var y = window.scrollY || window.pageYOffset || 0;
+      boost = Math.min(boost + Math.abs(y - prevY) * 0.85, 560);
+      prevY = y;
+    }, { passive: true });
+
+    var tickerLoop = function (ts) {
+      if (last === null) last = ts;
+      var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+      boost *= 0.92;
+      var speed = (paused ? 0 : base) + boost;
+      pos -= speed * dt;
+      if (half > 0) { while (pos <= -half) pos += half; }
+      track.style.transform = "translateX(" + pos.toFixed(2) + "px)";
+      window.requestAnimationFrame(tickerLoop);
+    };
+    window.requestAnimationFrame(tickerLoop);
   }
 })();
