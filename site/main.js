@@ -143,4 +143,25 @@
     if (desktopMq.addEventListener) desktopMq.addEventListener("change", onBreakpoint);
     else if (desktopMq.addListener) desktopMq.addListener(onBreakpoint);
   }
+
+  /* ---- Cursor-follow glow (Atuação) ---- */
+  var atuacao = document.querySelector(".atuacao");
+  if (atuacao && !reduceMotion && window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    var gx = 50, gy = 50, tx = 50, ty = 50, glowRAF = null;
+    var glowStep = function () {
+      gx += (tx - gx) * 0.12;
+      gy += (ty - gy) * 0.12;
+      atuacao.style.setProperty("--mx", gx.toFixed(2) + "%");
+      atuacao.style.setProperty("--my", gy.toFixed(2) + "%");
+      if (Math.abs(tx - gx) > 0.1 || Math.abs(ty - gy) > 0.1) {
+        glowRAF = window.requestAnimationFrame(glowStep);
+      } else { glowRAF = null; }
+    };
+    atuacao.addEventListener("mousemove", function (e) {
+      var r = atuacao.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width) * 100;
+      ty = ((e.clientY - r.top) / r.height) * 100;
+      if (glowRAF === null) glowRAF = window.requestAnimationFrame(glowStep);
+    });
+  }
 })();

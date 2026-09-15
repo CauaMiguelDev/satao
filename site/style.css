@@ -134,3 +134,10 @@ body.nav-lock{overflow:hidden}
 .footer-loc{display:inline-flex;align-items:center;gap:.42rem}
 .footer-loc svg{width:.9rem;height:.9rem;color:var(--red-hot)}
 @media (max-width:760px){.stats{grid-template-columns:1fr;gap:1.5rem}.stat:not(:first-child){padding-left:0;border-left:0;padding-top:1.4rem;border-top:1px solid rgba(20,9,11,.28)}}
+/* ===== Títulos entram em foco (blur → nítido) ===== */
+@media (prefers-reduced-motion:no-preference){.section-title.reveal,.legacy-copy h2.reveal,.closing h2.reveal{filter:blur(9px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}.section-title.is-visible,.legacy-copy h2.is-visible,.closing h2.is-visible{filter:blur(0)}}
+/* ===== Brilho que segue o cursor (Atuação) ===== */
+.atuacao{position:relative;isolation:isolate}
+.atuacao-head,.atuacao-grid{position:relative;z-index:1}
+.atuacao-glow{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(217,22,32,.2),transparent 66%)}
+@media (hover:hover) and (pointer:fine){.atuacao:hover .atuacao-glow{opacity:1}}
