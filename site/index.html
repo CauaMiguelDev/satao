@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Gilmar Satão — grafite, memória urbana e cultura Hip Hop em Brasília." />
   <title>Gilmar Satão — Grafite & Cultura Urbana</title>
+  <meta name="author" content="Gilmar Satão" />
+  <meta name="theme-color" content="#d91620" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="Gilmar Satão" />
+  <meta property="og:title" content="Gilmar Satão — Grafite & Cultura Urbana" />
+  <meta property="og:description" content="Pioneiro do grafite em Brasília. Trajetória, legado e agenda de Gilmar Satão — grafite, memória urbana e cultura Hip Hop." />
+  <meta property="og:image" content="media/og-cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gilmar Satão — Grafite & Cultura Urbana" />
+  <meta name="twitter:description" content="Pioneiro do grafite em Brasília — trajetória, legado e agenda." />
+  <meta name="twitter:image" content="media/og-cover.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23d91620'/%3E%3Ctext x='16' y='24' font-family='Arial Black,Arial,sans-serif' font-size='22' font-weight='900' text-anchor='middle' fill='%23f2e8dd'%3ES%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -28,14 +41,21 @@
     </div>
   </header>
   <main id="conteudo">
-    <section class="hero" id="inicio" aria-label="Vídeo de destaque">
-      <div class="hero-art">
-        <video class="hero-art-video" autoplay loop muted playsinline aria-hidden="true"
-               poster="media/hero-still-2k.jpg" preload="auto">
-          <source src="media/track-video-4k.mp4" type="video/mp4" media="(min-width: 1500px)" />
-          <source src="media/track-video-2k.mp4" type="video/mp4" />
-        </video>
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-art" aria-hidden="true">
+        <canvas class="hero-canvas"></canvas>
+        <div class="hero-grain"></div>
       </div>
+      <div class="hero-inner">
+        <p class="hero-eyebrow">GRAFITE · HIP HOP · MEMÓRIA URBANA</p>
+        <h1 class="hero-title" id="hero-title">GILMAR<br />SATÃO</h1>
+        <p class="hero-lead">Pioneiro do grafite em Brasília. Da Ceilândia para a história visual da cidade.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#agenda">Ver agenda</a>
+          <a class="button button-ghost" href="#historia">Conhecer a história</a>
+        </div>
+      </div>
+      <p class="hero-tags" aria-hidden="true"><b>GRAFITEIRO</b><span>JORNALISTA · PRODUTOR</span><span>CEILÂNDIA · DF · BRASIL</span></p>
     </section>
     <section class="ticker" aria-label="Pilares do trabalho de Satão">
       <div class="ticker-track">
