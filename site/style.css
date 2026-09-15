@@ -110,3 +110,11 @@ body.nav-lock{overflow:hidden}
 .atuacao-grid .atuacao-card.reveal{transition-delay:var(--delay,0ms)}
 .atuacao-grid .atuacao-card:nth-child(1){--delay:0ms}.atuacao-grid .atuacao-card:nth-child(2){--delay:70ms}.atuacao-grid .atuacao-card:nth-child(3){--delay:140ms}.atuacao-grid .atuacao-card:nth-child(4){--delay:210ms}
 @media (max-width:760px){.atuacao-grid{grid-template-columns:1fr}}
+/* ===== Instagram / inline links ===== */
+.inline-link{color:var(--red-hot);border-bottom:1px solid currentColor;transition:color .25s var(--ease),border-color .25s var(--ease)}
+.inline-link:hover,.inline-link:focus-visible{color:var(--paper);border-color:var(--paper)}
+.button-dark{color:var(--ink);border:1px solid rgba(20,9,11,.55)}
+.button-dark::before{background:var(--ink)}
+.button-dark:hover,.button-dark:focus-visible{color:var(--paper);border-color:var(--ink)}
+.closing-actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-self:start}
+.footer-nav{flex-wrap:wrap}
