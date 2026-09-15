@@ -122,3 +122,15 @@ body.nav-lock{overflow:hidden}
 .button:hover,.button:focus-visible{transform:scale(1.02)}
 .button:active{transform:scale(.99)}
 @media (prefers-reduced-motion:reduce){.button:hover,.button:focus-visible,.button:active{transform:none}}
+/* ===== Satão em números ===== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,4vw,3rem);padding:clamp(3rem,7vw,5.5rem) clamp(1rem,7vw,8rem);background:var(--red);color:var(--ink)}
+.stat{display:flex;flex-direction:column;gap:.45rem}
+.stat:not(:first-child){padding-left:clamp(1.4rem,4vw,3rem);border-left:1px solid rgba(20,9,11,.28)}
+.stat-num{font-family:var(--display);font-size:clamp(3.4rem,8vw,7rem);line-height:.85;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stat-label{font-family:var(--mono);font-size:clamp(.66rem,1vw,.8rem);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.stats .stat.reveal{transition-delay:var(--delay,0ms)}.stats .stat:nth-child(2){--delay:90ms}.stats .stat:nth-child(3){--delay:180ms}
+.agenda-type{display:flex;align-items:center;gap:.45rem}
+.agenda-icon{width:.95rem;height:.95rem;flex:0 0 auto;color:var(--red-hot)}
+.footer-loc{display:inline-flex;align-items:center;gap:.42rem}
+.footer-loc svg{width:.9rem;height:.9rem;color:var(--red-hot)}
+@media (max-width:760px){.stats{grid-template-columns:1fr;gap:1.5rem}.stat:not(:first-child){padding-left:0;border-left:0;padding-top:1.4rem;border-top:1px solid rgba(20,9,11,.28)}}

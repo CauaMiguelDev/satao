@@ -19,6 +19,32 @@
     revealItems.forEach(function (item) { revealObserver.observe(item); });
   }
 
+  /* ---- Count-up numbers ---- */
+  var counters = Array.prototype.slice.call(document.querySelectorAll("[data-count]"));
+  function countUp(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    var dur = 1400, startTs = null;
+    el.textContent = "0" + suffix;
+    function step(ts) {
+      if (startTs === null) startTs = ts;
+      var p = Math.min((ts - startTs) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (p < 1) window.requestAnimationFrame(step);
+      else el.textContent = target + suffix;
+    }
+    window.requestAnimationFrame(step);
+  }
+  if (counters.length && !reduceMotion && "IntersectionObserver" in window) {
+    var countObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { countUp(entry.target); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { countObserver.observe(el); });
+  }
+
   var topbar = document.querySelector(".topbar");
   var toTop = document.querySelector("[data-to-top]");
   var footer = document.querySelector(".footer");
