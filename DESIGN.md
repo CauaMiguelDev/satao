@@ -26,7 +26,8 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 - Hero assimétrico e imersivo: textura de muro generativa de fundo, scrim para leitura e uma manchete de grande escala ancorada embaixo.
 - Uma faixa cinética única articula os pilares culturais da página.
 - História organizada como leitura editorial; agenda organizada como lista de cartões, não como grade de produto.
-- O fundo do hero, o mural da seção de legado e a explosão do encerramento são texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — não fotografias, não vídeo e não reproduções de obras do artista.
+- O fundo do hero, o mural da seção de legado e a explosão do encerramento continuam sendo texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — nunca fotografias reais, nunca reproduções de uma obra específica do artista. Essa área da página é sempre abstrata, mesmo que fotografia real exista em outra seção (ver Galeria).
+- **Galeria**: seção dedicada a fotografia real do artista e do seu trabalho, usada apenas quando fornecida e autorizada diretamente por Gilmar Satão (ou por quem detém os direitos da foto). Grade de imagens com moldura fina vermelha, legenda em `Space Mono` (local/ano quando confirmados, "registro" quando não), tratamento leve de duotone (dessaturação parcial + sobreposição vermelho-tinta no hover) para manter as fotos dentro da paleta da página em vez de soltas em cor real. Nunca usar imagem sem autorização confirmada, nem atribuir foto a alguém que não a tirou.
 
 ## Motion
 
@@ -54,6 +55,7 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Don'ts
 
-- Não usar fotografia ou assinatura falsa do artista.
+- Não usar fotografia ou assinatura falsa do artista; fotografia real só entra na Galeria, e só quando autorizada por quem detém os direitos.
 - Não transformar a agenda em um conjunto de cards iguais.
 - Não adicionar efeitos de spray em loop ou animação que prejudique a leitura.
+- Não misturar fotografia real com a textura generativa do hero/mural/encerramento.

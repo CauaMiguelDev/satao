@@ -31,7 +31,8 @@ Um portfólio editorial de rua: história e agenda aparecem como parte de um mes
 ## Capabilities and Constraints
 
 - O site funciona sem framework e sem dependências de interface.
-- O hero usa um canvas generativo leve como textura de muro; não simula uma obra ou assinatura específica.
+- O hero, o mural de legado e a explosão de encerramento usam canvas generativo como textura; não simulam uma obra ou assinatura específica.
+- Uma seção de Galeria exibe fotografia real do artista e do seu trabalho, fornecida e autorizada diretamente por Gilmar Satão. Cada foto usada precisa ter autorização confirmada (do artista e, quando ele não for o fotógrafo, de quem tirou a foto) antes de entrar no site.
 - Informações de contato e redes sociais não foram fornecidas e não devem ser inventadas.
 
 ## Brand Commitments
@@ -45,6 +46,7 @@ Um portfólio editorial de rua: história e agenda aparecem como parte de um mes
 - Perfil público “Gilmar Satão — Arte de Toda Gente”.
 - Reportagem “Cultura urbana: arte que ocupa além do quadradinho”, Jornal de Brasília, 2025.
 - Registros públicos do encontro Graffitti COMVIDA de 2024.
+- Fotografias fornecidas e autorizadas diretamente pelo artista para a seção de Galeria (não extraídas de redes sociais por scraping automatizado).
 
 ## Product Principles
 
