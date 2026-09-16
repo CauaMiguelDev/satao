@@ -54,7 +54,6 @@ body.nav-lock{overflow:hidden}
 .closing .reveal{transition-delay:var(--delay,0ms)}.closing>.reveal:nth-child(2){--delay:0ms}.closing>.reveal:nth-child(3){--delay:100ms}.closing>.reveal:nth-child(4){--delay:200ms}
 @keyframes ticker-run{to{transform:translateX(-50%)}}
 /* ===== Hero content ===== */
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(20,9,11,.5) 0,transparent 20% 52%,rgba(20,9,11,.86) 100%),linear-gradient(90deg,rgba(20,9,11,.72),transparent 58%)}
 .hero-inner{position:relative;z-index:2;max-width:62rem;padding:0 clamp(1rem,7vw,8rem) clamp(4.5rem,10vw,8rem)}
 .hero-eyebrow{margin:0 0 1.15rem;font-family:var(--mono);font-size:clamp(.62rem,1vw,.78rem);font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--paper)}
 .hero-title{margin:0;font-family:var(--display);font-size:clamp(4rem,13vw,11rem);line-height:.95;letter-spacing:-.06em;color:var(--paper);text-wrap:balance}
@@ -150,3 +149,8 @@ body.nav-lock{overflow:hidden}
 .cursor-ring.is-interactive{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(217,22,32,.12);border-color:var(--red-hot)}
 .cursor-ring.is-down{width:24px;height:24px;margin:-12px 0 0 -12px;border-color:var(--red-hot)}
 body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .atuacao-card,body.has-cursor .agenda-item,body.has-cursor .hero-scroll{cursor:none}
+/* ===== Ticker sem vãos (grupos que se repetem) ===== */
+.ticker-track{gap:0}
+.ticker-group{display:inline-flex;align-items:center;gap:1.2rem;padding-right:1.2rem;flex:0 0 auto}
+/* ===== Hero sem degradê: sombra suave garante leitura do título ===== */
+.hero-eyebrow,.hero-title,.hero-lead{text-shadow:0 2px 20px rgba(20,9,11,.42)}

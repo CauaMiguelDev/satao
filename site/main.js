@@ -212,38 +212,67 @@
     window.requestAnimationFrame(cursorLoop);
   }
 
-  /* ---- Kinetic ticker: base drift + scroll-velocity boost ---- */
+  /* ---- Kinetic ticker: seamless, sempre preenchido + boost pelo scroll ---- */
   var ticker = document.querySelector(".ticker");
   var track = document.querySelector(".ticker-track");
-  if (ticker && track && !reduceMotion) {
-    track.style.animation = "none";
-    track.style.willChange = "transform";
-    var half = track.scrollWidth / 2;
-    window.addEventListener("resize", function () { half = track.scrollWidth / 2; });
-
-    var pos = 0, base = 44, boost = 0, paused = false, last = null;
-    var prevY = window.scrollY || window.pageYOffset || 0;
-
-    if (window.matchMedia("(hover:hover)").matches) {
-      ticker.addEventListener("mouseenter", function () { paused = true; });
-      ticker.addEventListener("mouseleave", function () { paused = false; });
+  if (ticker && track) {
+    // Coleta as palavras já presentes no markup (preserva acentos/conteúdo).
+    var tSpans = track.querySelectorAll("span");
+    var words = [], seen = {};
+    for (var wi = 0; wi < tSpans.length; wi++) {
+      var wt = tSpans[wi].textContent.trim();
+      if (!wt || seen[wt]) break;
+      seen[wt] = true; words.push(wt);
     }
-    window.addEventListener("scroll", function () {
-      var y = window.scrollY || window.pageYOffset || 0;
-      boost = Math.min(boost + Math.abs(y - prevY) * 0.85, 560);
-      prevY = y;
-    }, { passive: true });
+    if (!words.length) words = ["GRAFITE", "HIP HOP", "CEILÂNDIA", "BRASÍLIA", "MEMÓRIA URBANA"];
 
-    var tickerLoop = function (ts) {
-      if (last === null) last = ts;
-      var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
-      boost *= 0.92;
-      var speed = (paused ? 0 : base) + boost;
-      pos -= speed * dt;
-      if (half > 0) { while (pos <= -half) pos += half; }
-      track.style.transform = "translateX(" + pos.toFixed(2) + "px)";
-      window.requestAnimationFrame(tickerLoop);
+    var groupHTML = '<span class="ticker-group">';
+    for (var gi = 0; gi < words.length; gi++) groupHTML += "<span>" + words[gi] + "</span><i></i>";
+    groupHTML += "</span>";
+
+    var unit = 0;
+    var buildTicker = function () {
+      track.style.animation = "none";
+      track.innerHTML = groupHTML;
+      var first = track.firstElementChild;
+      unit = first ? first.getBoundingClientRect().width : 0;
+      // Duplica os grupos até cobrir com folga a largura da tela (sem vãos).
+      var need = window.innerWidth * 2 + unit;
+      var guard = 0;
+      while (unit > 0 && track.scrollWidth < need && guard < 60) {
+        track.insertAdjacentHTML("beforeend", groupHTML);
+        guard++;
+      }
     };
-    window.requestAnimationFrame(tickerLoop);
+    buildTicker();
+
+    if (!reduceMotion && unit > 0) {
+      track.style.willChange = "transform";
+      var pos = 0, base = 44, boost = 0, paused = false, last = null;
+      var prevY = window.scrollY || window.pageYOffset || 0;
+
+      window.addEventListener("resize", function () { buildTicker(); pos = 0; last = null; });
+      if (window.matchMedia("(hover:hover)").matches) {
+        ticker.addEventListener("mouseenter", function () { paused = true; });
+        ticker.addEventListener("mouseleave", function () { paused = false; });
+      }
+      window.addEventListener("scroll", function () {
+        var y = window.scrollY || window.pageYOffset || 0;
+        boost = Math.min(boost + Math.abs(y - prevY) * 0.85, 560);
+        prevY = y;
+      }, { passive: true });
+
+      var tickerLoop = function (ts) {
+        if (last === null) last = ts;
+        var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
+        boost *= 0.92;
+        var speed = (paused ? 0 : base) + boost;
+        pos -= speed * dt;
+        if (unit > 0) { while (pos <= -unit) pos += unit; }
+        track.style.transform = "translateX(" + pos.toFixed(2) + "px)";
+        window.requestAnimationFrame(tickerLoop);
+      };
+      window.requestAnimationFrame(tickerLoop);
+    }
   }
 })();
