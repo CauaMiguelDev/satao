@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Gilmar Satão — grafite, memória urbana e cultura Hip Hop em Brasília." />
+  <meta name="description" content="Gilmar Satão — grafiteiro, jornalista e produtor. Grafite wild-style, memória urbana e cultura Hip Hop, da Ceilândia para os muros de Brasília." />
+  <meta name="author" content="Gilmar Satão" />
+  <meta name="theme-color" content="#d91620" />
   <title>Gilmar Satão — Grafite & Cultura Urbana</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23d91620'/%3E%3Ctext x='32' y='44' font-family='Arial Black,Arial,sans-serif' font-size='38' font-weight='900' fill='%23f2e8dd' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
   <meta property="og:title" content="Gilmar Satão — Grafite & Cultura Urbana" />
-  <meta property="og:description" content="Grafite, memória urbana e cultura Hip Hop em Brasília — na voz de Gilmar Satão." />
-  <meta property="og:image" content="media/hero-bg-2k.jpg" />
+  <meta property="og:description" content="Três décadas de grafite, Hip Hop e memória urbana, da Ceilândia para os muros do DF." />
+  <meta property="og:image" content="media/hero-still-2k.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gilmar Satão — Grafite & Cultura Urbana" />
+  <meta name="twitter:description" content="Três décadas de grafite, Hip Hop e memória urbana, da Ceilândia para os muros do DF." />
+  <meta name="twitter:image" content="media/hero-still-2k.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23d91620'/%3E%3Ctext x='16' y='24' font-family='Arial Black,Arial,sans-serif' font-size='22' font-weight='900' fill='%23f2e8dd' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -18,34 +24,55 @@
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="wordmark" href="#inicio" aria-label="Gilmar Satão, início">SATÃO<span>®</span></a>
+    <div class="scroll-progress" aria-hidden="true"><span data-progress></span></div>
+    <a class="wordmark" href="#inicio" aria-label="Gilmar Satão, início">
+      <span class="wordmark-name">SATÃO<span class="wordmark-reg">®</span></span>
+      <span class="wordmark-tag">Ceilândia · DF</span>
+    </a>
+    <div class="nav-scrim" data-scrim></div>
     <nav id="primary-nav" aria-label="Navegação principal">
-      <a href="#historia">História</a>
-      <a href="#legado">Legado</a>
-      <a href="#galeria">Galeria</a>
-      <a href="#agenda">Agenda</a>
+      <a href="#historia"><span class="navlink-index" aria-hidden="true">01</span><span class="navlink-label">História</span><span class="navlink-sub">Da Ceilândia à OS-3S</span></a>
+      <a href="#legado"><span class="navlink-index" aria-hidden="true">02</span><span class="navlink-label">Legado</span><span class="navlink-sub">A rua tem voz</span></a>
+      <a href="#atuacao"><span class="navlink-index" aria-hidden="true">03</span><span class="navlink-label">Atuação</span><span class="navlink-sub">Murais, oficinas, palestras</span></a>
+      <a href="#galeria"><span class="navlink-index" aria-hidden="true">04</span><span class="navlink-label">Galeria</span><span class="navlink-sub">Obras pela cidade</span></a>
+      <a href="#agenda"><span class="navlink-index" aria-hidden="true">05</span><span class="navlink-label">Agenda</span><span class="navlink-sub">Próximas ações</span></a>
+      <a class="nav-cta" href="#agenda"><span>Ver a agenda</span><span class="nav-cta-arrow" aria-hidden="true">↗</span></a>
+      <p class="nav-foot">Ceilândia · DF · Brasil</p>
     </nav>
     <div class="topbar-right">
+      <a class="topbar-action" href="#agenda">
+        <span>Ver agenda</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+      </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
-        <span></span>
-        <span class="sr-only nav-toggle-label">Abrir menu</span>
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="sr-only">Abrir menu</span>
       </button>
-      <a class="topbar-action magnetic" href="#agenda">VER AGENDA<svg class="btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></a>
     </div>
   </header>
   <main id="conteudo">
-    <section class="hero" id="inicio" aria-label="Abertura">
-      <div class="hero-art">
-        <img class="hero-art-bg" src="media/hero-bg-2k.jpg" srcset="media/hero-bg-2k.jpg 1920w, media/hero-bg-4k.jpg 3840w" sizes="100vw" alt="" aria-hidden="true" fetchpriority="high" />
-        <div class="hero-spray-layer" aria-hidden="true"></div>
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-art" aria-hidden="true">
+        <video class="hero-art-video" autoplay loop muted playsinline
+               poster="media/hero-still-4k.jpg" preload="auto">
+          <source src="media/track-video-4k.mp4" type="video/mp4" media="(min-width: 1024px)" />
+          <source src="media/track-video-2k.mp4" type="video/mp4" />
+        </video>
       </div>
-      <div class="hero-scrim" aria-hidden="true"></div>
-      <div class="hero-copy">
-        <h1 class="hero-title"><span class="hero-line"><span>MURO EM</span></span><span class="hero-line"><span>MOVIMENTO.</span></span></h1>
-        <p class="hero-sub">Grafite, memória urbana e cultura Hip Hop em Brasília — na voz de Gilmar Satão.</p>
+      <div class="hero-inner">
+        <p class="hero-eyebrow">Grafite · Hip Hop · Brasília</p>
+        <h1 class="hero-title" id="hero-title"><span class="ht-word">GILMAR</span><span class="ht-word">SATÃO</span></h1>
+        <p class="hero-lead">Da Ceilândia para os muros do DF — três décadas transformando o espaço público em arquivo vivo.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#agenda">Ver a agenda<svg class="button-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg></a>
+          <a class="button button-outline" href="#historia">Conhecer a história</a>
+        </div>
       </div>
+      <a class="hero-scroll" href="#historia" aria-label="Rolar para a próxima seção">
+        <span>ROLE</span>
+        <span class="hero-scroll-line" aria-hidden="true"></span>
+      </a>
     </section>
     <section class="ticker" aria-label="Pilares do trabalho de Satão">
       <div class="ticker-track">
@@ -57,13 +84,18 @@
       <div class="story-aside reveal"><p>TRAJETÓRIA</p><span>ANOS 1990 — AGORA</span></div>
       <div class="story-main">
         <h2 id="history-title" class="section-title reveal">DA RUA PARA A HISTÓRIA DA CIDADE.</h2>
-        <p class="story-lead reveal">Nascido e criado na Ceilândia, Gilmar Satão é grafiteiro, jornalista, produtor e uma voz ativa da cultura Hip Hop em Brasília.</p>
+        <p class="story-lead reveal">Nascido e criado na Ceilândia, Gilmar Satão é grafiteiro, jornalista, educador e produtor — uma das vozes mais antigas e ativas da cultura Hip Hop em Brasília.</p>
         <div class="story-copy reveal">
-          <p>Depois de uma década pelas ruas, o encontro com o Hip Hop abriu outra linguagem: o grafite como presença, criação e diálogo com a quebrada.</p>
-          <p>No começo dos anos 1990, ao lado de Sowtto e Supla, ajudou a formar a OS-3S — uma das primeiras crews de grafite do Distrito Federal. O traço wild-style ganhou os muros e passou a fazer parte da memória visual de Brasília.</p>
+          <p>Começou ainda garoto, aos 12 anos, riscando a cidade. O encontro com o Hip Hop abriu outra linguagem: o grafite como presença, criação e diálogo com a quebrada.</p>
+          <p>Em 1993, ao lado de Sowtto e Supla, formou a OS-3S — a primeira crew de grafite do Distrito Federal. O traço wild-style virou referência na memória visual de Brasília e levou seu nome de vários estados até a França.</p>
         </div>
       </div>
       <div class="story-index reveal" aria-label="Marcos da trajetória"><div><strong>01</strong><span>CEILÂNDIA</span></div><div><strong>02</strong><span>OS-3S</span></div><div><strong>03</strong><span>DF ZULU</span></div></div>
+    </section>
+    <section class="stats" aria-label="Satão em números">
+      <div class="stat reveal"><strong class="stat-num" data-count="30" data-suffix="+">30+</strong><span class="stat-label">Anos de trajetória</span></div>
+      <div class="stat reveal"><strong class="stat-num" data-count="1993">1993</strong><span class="stat-label">Nasce a OS-3S</span></div>
+      <div class="stat reveal"><strong class="stat-num" data-count="100" data-suffix="%">100%</strong><span class="stat-label">Raiz Ceilândia</span></div>
     </section>
     <section class="legacy" id="legado" aria-labelledby="legacy-title">
       <div class="legacy-wall" aria-hidden="true"><div class="wall-tag wall-tag-a">RUA</div><div class="wall-tag wall-tag-b">TEM</div><div class="wall-tag wall-tag-c">VOZ</div><div class="wall-line line-a"></div><div class="wall-line line-b"></div><div class="wall-drip drip-a"></div><div class="wall-drip drip-b"></div></div>
@@ -73,8 +105,28 @@
         <p class="reveal">Entre muros, escolas, encontros e ações culturais, a prática de Satão reafirma a rua como lugar de troca e permanência.</p>
       </div>
     </section>
+    <section class="atuacao section-pad" id="atuacao" aria-labelledby="atuacao-title">
+      <div class="atuacao-glow" aria-hidden="true"></div>
+      <div class="atuacao-head">
+        <p class="atuacao-eyebrow reveal">O QUE EU FAÇO</p>
+        <h2 id="atuacao-title" class="section-title reveal">DA PAREDE AO ENCONTRO.</h2>
+        <p class="atuacao-lead reveal">Grafite é presença. Levo o traço e a conversa para muros, escolas e espaços culturais.</p>
+      </div>
+      <div class="atuacao-grid">
+        <article class="atuacao-card reveal"><svg class="atuacao-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="9.5" width="8" height="11.5" rx="1.5"/><path d="M9 9.5V6.5h4v3"/><path d="M17 5h.01M19.2 4h.01M18.4 7.2h.01M20.4 6.4h.01"/></svg><span class="atuacao-num">01</span><h3>Murais &amp; Painéis</h3><p>Grafite autoral wild-style para muros, fachadas e espaços culturais.</p></article>
+        <article class="atuacao-card reveal"><svg class="atuacao-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="8.5" r="2.3"/><path d="M15.5 14.6c2.5 0 4.5 1.9 4.5 4.6"/></svg><span class="atuacao-num">02</span><h3>Oficinas de Grafite</h3><p>Vivências e formação com a molecada, escolas e a comunidade.</p></article>
+        <article class="atuacao-card reveal"><svg class="atuacao-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17v3.5M9 20.5h6"/></svg><span class="atuacao-num">03</span><h3>Palestras &amp; Mediação</h3><p>Conversas sobre Hip Hop, memória urbana e cultura de rua.</p></article>
+        <article class="atuacao-card reveal"><svg class="atuacao-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.3 6.2 6.2 2.3-6.2 2.3L12 20l-2.3-6.2L3.5 11.5l6.2-2.3z"/></svg><span class="atuacao-num">04</span><h3>Produção Cultural</h3><p>Encontros, ações e eventos que movimentam a cena do DF.</p></article>
+      </div>
+    </section>
     <section class="gallery section-pad" id="galeria" aria-labelledby="gallery-title">
-      <div class="gallery-head"><h2 id="gallery-title" class="section-title reveal">OBRAS PELA CIDADE.</h2><p class="reveal">Registros do traço de Satão em muros, vagões e encontros — a mesma trajetória iniciada com a OS-3S e o DF Zulu, nos anos 1990.</p></div>
+      <div class="gallery-head">
+        <div class="gallery-head-main">
+          <p class="gallery-eyebrow reveal">Galeria</p>
+          <h2 id="gallery-title" class="section-title reveal">OBRAS PELA CIDADE.</h2>
+        </div>
+        <p class="reveal">Registros do traço de Satão em muros, vagões e encontros — a mesma trajetória iniciada com a OS-3S e o DF Zulu, nos anos 1990.</p>
+      </div>
       <div class="gallery-grid">
         <figure class="gallery-item reveal"><img src="media/galeria/satao-df-zulu.jpg" width="720" height="1280" loading="lazy" decoding="async" alt="Gilmar Satão visto de costas, pintando um vagão de trem, vestindo jaqueta com a escrita DF Zulu" /><figcaption>SATÃO, DF ZULU</figcaption></figure>
         <figure class="gallery-item reveal"><img src="media/galeria/vagao-metrodf-02.jpg" width="900" height="1600" loading="lazy" decoding="async" alt="Vagão de trem do Metrô-DF pintado com grafite multicolorido" /><figcaption>VAGÃO PINTADO</figcaption></figure>
@@ -92,15 +144,39 @@
       </div>
     </section>
     <section class="agenda section-pad" id="agenda" aria-labelledby="agenda-title">
-      <div class="agenda-head"><h2 id="agenda-title" class="section-title reveal">AGENDA EM MOVIMENTO.</h2><p class="reveal">Novas datas, pinturas e encontros serão publicados aqui.</p></div>
+      <div class="agenda-head"><div class="agenda-head-main"><p class="agenda-eyebrow reveal">Programação</p><h2 id="agenda-title" class="section-title reveal">AGENDA EM MOVIMENTO.</h2></div><p class="reveal">Novas datas, pinturas e encontros serão publicados aqui.</p></div>
       <div class="agenda-list">
-        <article class="agenda-item agenda-next reveal"><div class="agenda-date"><span>EM</span><strong>BREVE</strong></div><div><p class="agenda-type">PRÓXIMA AÇÃO</p><h3>AGENDA 2026 EM ATUALIZAÇÃO</h3><p>Quer receber a programação de murais, oficinas e encontros? Acompanhe este espaço.</p></div><span class="agenda-status"><svg class="status-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>AGUARDE</span></article>
-        <article class="agenda-item reveal"><div class="agenda-date"><span>ARQ.</span><strong>2024</strong></div><div><p class="agenda-type">ENCONTRO</p><h3>GRAFFITTI COMVIDA</h3><p>Sol Nascente recebeu um encontro que celebrou três décadas de trajetória e reuniu artistas de diferentes estados.</p></div><span class="agenda-status"><svg class="status-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></svg>ARQUIVO</span></article>
+        <article class="agenda-item agenda-next reveal"><div class="agenda-date"><span>EM</span><strong>BREVE</strong></div><div><p class="agenda-type"><svg class="agenda-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2" /><path d="M4 9.5h16M8 3v4M16 3v4" /></svg>PRÓXIMA AÇÃO</p><h3>AGENDA 2026 EM ATUALIZAÇÃO</h3><p>Quer receber a programação de murais, oficinas e encontros? Acompanhe no <a class="inline-link" href="https://www.instagram.com/gilmar_satao/" target="_blank" rel="noopener">Instagram @gilmar_satao</a>.</p></div><span class="agenda-status">AGUARDE</span></article>
+        <article class="agenda-item reveal"><div class="agenda-date"><span>ARQ.</span><strong>2024</strong></div><div><p class="agenda-type"><svg class="agenda-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4" /></svg>ENCONTRO</p><h3>GRAFFITTI COMVIDA</h3><p>Sol Nascente recebeu um encontro que celebrou três décadas de trajetória e reuniu artistas de diferentes estados.</p></div><span class="agenda-status">ARQUIVO</span></article>
       </div>
     </section>
-    <section class="closing"><div class="closing-spray" aria-hidden="true"></div><p class="reveal">A CIDADE É NOSSA TELA.</p><h2 class="reveal">SATÃO<br />EM MOVIMENTO.</h2><a class="button button-light magnetic reveal" href="#agenda">Acompanhar a agenda<svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></a></section>
+    <section class="closing"><div class="closing-spray" aria-hidden="true"></div><p class="reveal">A CIDADE É NOSSA TELA.</p><h2 class="reveal">SATÃO<br />EM MOVIMENTO.</h2><div class="closing-actions reveal"><a class="button button-light" href="https://www.instagram.com/gilmar_satao/" target="_blank" rel="noopener"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17" cy="7" r="1.2" fill="currentColor" stroke="none" /></svg>Seguir no Instagram</a><a class="button button-dark" href="#agenda">Acompanhar a agenda</a></div></section>
   </main>
-  <footer class="footer"><p>GILMAR SATÃO · GRAFITE &amp; CULTURA URBANA</p><p>CEILÂNDIA · DF · BRASIL</p></footer>
+  <footer class="footer">
+    <div class="footer-brand">
+      <a class="footer-mark" href="#inicio" aria-label="Gilmar Satão, voltar ao início">SATÃO<span>®</span></a>
+      <div class="footer-brand-text">
+        <p>Grafite &amp; cultura urbana</p>
+        <p class="footer-bio">Grafiteiro, jornalista e produtor cultural. Da Ceilândia (DF) aos muros do Brasil — e até a França.</p>
+      </div>
+    </div>
+    <nav class="footer-nav" aria-label="Navegação do rodapé">
+      <a href="#historia">História</a>
+      <a href="#legado">Legado</a>
+      <a href="#atuacao">Atuação</a>
+      <a href="#agenda">Agenda</a>
+      <a class="footer-ig" href="https://www.instagram.com/gilmar_satao/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" /></svg>Instagram</a>
+    </nav>
+    <div class="footer-meta">
+      <p class="footer-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>Ceilândia · DF · Brasil</p>
+      <p>© 2026 Gilmar Satão</p>
+    </div>
+  </footer>
+  <button class="to-top" type="button" aria-label="Voltar ao topo" data-to-top>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+  </button>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
   <script src="main.js"></script>
 </body>
 </html>

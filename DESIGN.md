@@ -23,27 +23,20 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Layout
 
-- Hero assimétrico e imersivo: textura de muro generativa de fundo, scrim para leitura e uma manchete de grande escala ancorada embaixo.
+- Hero assimétrico e imersivo, com uma textura generativa abstrata e palavras de grande escala.
 - Uma faixa cinética única articula os pilares culturais da página.
-- História organizada como leitura editorial; agenda organizada como lista de cartões, não como grade de produto.
-- O fundo do hero, o mural da seção de legado e a explosão do encerramento continuam sendo texturas generativas próprias (`generate-assets.js`, via `canvas`), compostas por splatters, drips e grão de spray — nunca fotografias reais, nunca reproduções de uma obra específica do artista. Essa área da página é sempre abstrata, mesmo que fotografia real exista em outra seção (ver Galeria).
-- **Galeria**: seção dedicada a fotografia real do artista e do seu trabalho, usada apenas quando fornecida e autorizada diretamente por Gilmar Satão (ou por quem detém os direitos da foto). Grade de imagens com moldura fina vermelha, legenda em `Space Mono` (local/ano quando confirmados, "registro" quando não), tratamento leve de duotone (dessaturação parcial + sobreposição vermelho-tinta no hover) para manter as fotos dentro da paleta da página em vez de soltas em cor real. Nunca usar imagem sem autorização confirmada, nem atribuir foto a alguém que não a tirou.
+- História organizada como leitura editorial; agenda organizada como lista, não como cartões de produto.
+- O mural abstrato da seção de legado é uma composição própria da página e não pretende reproduzir trabalhos do artista.
 
 ## Motion
 
 - Revelações com `opacity` e `transform` ao entrar no campo de leitura.
 - A faixa textual tem um único movimento contínuo, com redução total em `prefers-reduced-motion`.
-- O momento autoral da página é a manchete do hero: as linhas assentam de um borrão (névoa de spray) para nitidez ao carregar.
-- Dentro do hero, o cursor (mouse) ou o toque (mobile) deixam um rastro breve de respingos — confinado à arte do hero, nunca sobre texto de leitura, e totalmente desativado em `prefers-reduced-motion`.
-- O mural de legado se desloca sutilmente (parallax contido) ao rolar a página.
+- A textura do hero é estática após o desenho inicial, preservando desempenho.
 
 ## Interaction
 
-- Botões e badges de status são pílulas (`border-radius:999px`), com um ícone SVG inline (seta, relógio, check) — nunca ícone de fonte ou biblioteca externa.
-- Botões sobem discretamente no hover, comprimem no toque, e revelam o ícone com um leve slide; os CTAs principais (topo e encerramento) têm leve atração magnética ao cursor, desativada em `prefers-reduced-motion`.
-- Uma barra fina de progresso de leitura acompanha o scroll no topo da página.
-- Itens da agenda são cartões com borda e leve elevação no hover, não uma lista plana; o badge de status carrega um ícone (relógio para pendente, check para arquivado) para não depender só da cor.
-- O botão de menu mobile é circular, com fundo sutil no hover.
+- Botões sobem discretamente no hover e comprimem no toque.
 - Todos os links mantêm foco de teclado de alto contraste.
 - Datas ainda não confirmadas recebem o estado explícito “Em breve”.
 
@@ -55,7 +48,6 @@ O site deve se comportar como um muro de cidade: camadas, marcas, desgaste e gra
 
 ## Don'ts
 
-- Não usar fotografia ou assinatura falsa do artista; fotografia real só entra na Galeria, e só quando autorizada por quem detém os direitos.
+- Não usar fotografia ou assinatura falsa do artista.
 - Não transformar a agenda em um conjunto de cards iguais.
 - Não adicionar efeitos de spray em loop ou animação que prejudique a leitura.
-- Não misturar fotografia real com a textura generativa do hero/mural/encerramento.
