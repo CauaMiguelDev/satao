@@ -8,10 +8,27 @@
   if (reduceMotion || !("IntersectionObserver" in window)) {
     revealItems.forEach(function (item) { item.classList.add("is-visible"); });
   } else {
+    // Ícones .icon-draw "se desenham": mede o traço real de cada forma e
+    // prepara o stroke-dash para animar até 0 quando o card entra na tela.
+    var drawSelector = "svg.icon-draw path, svg.icon-draw circle, svg.icon-draw rect, svg.icon-draw line";
+    document.querySelectorAll(drawSelector).forEach(function (shape) {
+      if (typeof shape.getTotalLength !== "function") return;
+      var len;
+      try { len = shape.getTotalLength(); } catch (e) { return; }
+      if (!len) return;
+      shape.style.strokeDasharray = len;
+      shape.style.strokeDashoffset = len;
+    });
+    var drawIcons = function (root) {
+      root.querySelectorAll(drawSelector).forEach(function (shape) {
+        shape.style.strokeDashoffset = 0;
+      });
+    };
     var revealObserver = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
+          drawIcons(entry.target);
           obs.unobserve(entry.target);
         }
       });
@@ -178,7 +195,7 @@
     var root = document.documentElement;
     var mx = window.innerWidth / 2, my = window.innerHeight / 2;
     var rx = mx, ry = my, started = false;
-    var interactive = "a,button,[role=button],input,textarea,select,.atuacao-card,.agenda-item,.inline-link,.hero-scroll,.gallery-item";
+    var interactive = "a,button,[role=button],input,textarea,select,.atuacao-card,.agenda-item,.inline-link,.hero-scroll,.gallery-item,.about-frame";
 
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
@@ -210,6 +227,37 @@
       window.requestAnimationFrame(cursorLoop);
     };
     window.requestAnimationFrame(cursorLoop);
+  }
+
+  /* ---- Retrato "Sobre o artista": tilt 3D que segue o cursor ---- */
+  var aboutFrame = document.querySelector(".about-frame");
+  var aboutPhoto = document.querySelector(".about-photo");
+  if (aboutFrame && aboutPhoto && !reduceMotion && window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    var abTargetX = 0, abTargetY = 0, abTargetS = 1;
+    var abCurX = 0, abCurY = 0, abCurS = 1, abRAF = null;
+    var abStep = function () {
+      abCurX += (abTargetX - abCurX) * 0.14;
+      abCurY += (abTargetY - abCurY) * 0.14;
+      abCurS += (abTargetS - abCurS) * 0.14;
+      aboutPhoto.style.transform =
+        "rotate(1.6deg) perspective(900px) rotateX(" + abCurY.toFixed(2) + "deg) rotateY(" + abCurX.toFixed(2) + "deg) scale(" + abCurS.toFixed(3) + ")";
+      var settled = Math.abs(abTargetX - abCurX) < 0.05 && Math.abs(abTargetY - abCurY) < 0.05 && Math.abs(abTargetS - abCurS) < 0.001;
+      if (!settled) abRAF = window.requestAnimationFrame(abStep);
+      else abRAF = null;
+    };
+    aboutFrame.addEventListener("mousemove", function (e) {
+      var r = aboutFrame.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      abTargetX = px * 14;
+      abTargetY = py * -12;
+      abTargetS = 1.035;
+      if (abRAF === null) abRAF = window.requestAnimationFrame(abStep);
+    });
+    aboutFrame.addEventListener("mouseleave", function () {
+      abTargetX = 0; abTargetY = 0; abTargetS = 1;
+      if (abRAF === null) abRAF = window.requestAnimationFrame(abStep);
+    });
   }
 
   /* ---- Kinetic ticker: seamless, sempre preenchido + boost pelo scroll ---- */
