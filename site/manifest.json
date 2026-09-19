@@ -1,0 +1,17 @@
+{
+  "name": "Gilmar Satão — Grafite & Cultura Urbana",
+  "short_name": "Satão",
+  "description": "Grafiteiro, jornalista, educador e produtor cultural. Três décadas de grafite, Hip Hop e memória urbana, da Ceilândia para os muros do DF.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#14090b",
+  "theme_color": "#d91620",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "media/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "media/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "media/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

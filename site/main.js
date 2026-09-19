@@ -1,6 +1,13 @@
 (function () {
   "use strict";
 
+  /* ---- PWA: registra o service worker para funcionar offline/instalado ---- */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---- Reveal on scroll ---- */
@@ -138,14 +145,14 @@
       topbar.classList.add("nav-open");
       navToggle.setAttribute("aria-expanded", "true");
       document.body.classList.add("nav-lock");
-      setLabel("Fechar menu");
+      setLabel(translate("menu.close") || "Fechar menu");
     };
     var closeNav = function () {
       if (!topbar.classList.contains("nav-open")) return;
       topbar.classList.remove("nav-open");
       navToggle.setAttribute("aria-expanded", "false");
       document.body.classList.remove("nav-lock");
-      setLabel("Abrir menu");
+      setLabel(translate("menu.open") || "Abrir menu");
     };
 
     navToggle.addEventListener("click", function () {
@@ -324,17 +331,45 @@
     }
   }
 
+  /* ---- Filtro da galeria por categoria ---- */
+  var galleryFilters = Array.prototype.slice.call(document.querySelectorAll(".gallery-filter"));
+  var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item"));
+  if (galleryFilters.length && galleryItems.length) {
+    galleryFilters.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var cat = btn.getAttribute("data-filter");
+        galleryFilters.forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+        galleryItems.forEach(function (item) {
+          var show = cat === "all" || item.getAttribute("data-cat") === cat;
+          item.classList.toggle("is-hidden", !show);
+        });
+        if (typeof refreshVisibleGalleryImgs === "function") refreshVisibleGalleryImgs();
+      });
+    });
+  }
+
   /* ---- Lightbox da galeria (clicar para ampliar) ---- */
-  var galleryImgs = Array.prototype.slice.call(document.querySelectorAll(".gallery-item img"));
-  if (galleryImgs.length) {
+  var allGalleryImgs = Array.prototype.slice.call(document.querySelectorAll(".gallery-item img"));
+  var galleryImgs = allGalleryImgs;
+  var refreshVisibleGalleryImgs = function () {
+    galleryImgs = allGalleryImgs.filter(function (img) {
+      var fig = img.closest("figure");
+      return fig && !fig.classList.contains("is-hidden");
+    });
+  };
+  if (allGalleryImgs.length) {
     var lb = document.createElement("div");
     lb.className = "lightbox";
     lb.setAttribute("aria-hidden", "true");
     lb.innerHTML =
-      '<button class="lightbox-close" type="button" aria-label="Fechar galeria">×</button>' +
-      '<button class="lightbox-nav lightbox-prev" type="button" aria-label="Imagem anterior">‹</button>' +
+      '<button class="lightbox-close" type="button" aria-label="Fechar galeria" data-i18n-aria="aria.closeGallery">×</button>' +
+      '<button class="lightbox-nav lightbox-prev" type="button" aria-label="Imagem anterior" data-i18n-aria="aria.prevImg">‹</button>' +
       '<figure class="lightbox-fig"><img alt=""><figcaption></figcaption></figure>' +
-      '<button class="lightbox-nav lightbox-next" type="button" aria-label="Próxima imagem">›</button>';
+      '<button class="lightbox-nav lightbox-next" type="button" aria-label="Próxima imagem" data-i18n-aria="aria.nextImg">›</button>';
     document.body.appendChild(lb);
     var lbImg = lb.querySelector(".lightbox-fig img");
     var lbCap = lb.querySelector(".lightbox-fig figcaption");
@@ -362,8 +397,8 @@
       document.body.classList.remove("nav-lock");
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
     };
-    galleryImgs.forEach(function (img, i) {
-      img.addEventListener("click", function () { openLb(i); });
+    allGalleryImgs.forEach(function (img) {
+      img.addEventListener("click", function () { openLb(galleryImgs.indexOf(img)); });
     });
     lb.querySelector(".lightbox-close").addEventListener("click", closeLb);
     lb.querySelector(".lightbox-prev").addEventListener("click", function (e) { e.stopPropagation(); showImg(lbIndex - 1); });
@@ -376,4 +411,46 @@
       else if (e.key === "ArrowRight") showImg(lbIndex + 1);
     });
   }
+
+  /* ---- Idioma: PT (padrão) / EN / FR ---- */
+  var currentLang = "pt";
+  function translate(key) {
+    if (currentLang === "pt") return undefined;
+    var dict = window.SATAO_I18N && window.SATAO_I18N[currentLang];
+    return dict ? dict[key] : undefined;
+  }
+  var i18nItems = [];
+  document.querySelectorAll("[data-i18n]").forEach(function (el) {
+    var key = el.getAttribute("data-i18n");
+    var isHtml = el.hasAttribute("data-i18n-html");
+    i18nItems.push({ el: el, key: key, isHtml: isHtml, pt: isHtml ? el.innerHTML : el.textContent });
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+    var key = el.getAttribute("data-i18n-aria");
+    i18nItems.push({ el: el, key: key, attr: "aria-label", pt: el.getAttribute("aria-label") });
+  });
+  var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang-btn"));
+  function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+    var dict = (lang !== "pt" && window.SATAO_I18N && window.SATAO_I18N[lang]) || {};
+    i18nItems.forEach(function (item) {
+      var val = lang === "pt" || dict[item.key] === undefined ? item.pt : dict[item.key];
+      if (item.attr) item.el.setAttribute(item.attr, val);
+      else if (item.isHtml) item.el.innerHTML = val;
+      else item.el.textContent = val;
+    });
+    langButtons.forEach(function (b) {
+      var active = b.getAttribute("data-lang") === lang;
+      b.classList.toggle("is-active", active);
+      b.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    try { localStorage.setItem("satao-lang", lang); } catch (e) {}
+  }
+  langButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+  });
+  var savedLang = "pt";
+  try { savedLang = localStorage.getItem("satao-lang") || "pt"; } catch (e) {}
+  if (savedLang !== "pt" && window.SATAO_I18N && window.SATAO_I18N[savedLang]) applyLang(savedLang);
 })();
