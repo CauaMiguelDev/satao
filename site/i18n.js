@@ -85,6 +85,7 @@ window.SATAO_I18N = {
     "oficinas.card3.h": "Format", "oficinas.card3.p": "In-person sessions with hands-on painting on wall or paper, adapted to the group's age range and available time.",
     "oficinas.cta.p": "Want to bring a workshop, talk or mural to your school, institution or event?",
     "oficinas.cta.btn": "Request via Instagram",
+    "oficinas.cta.whatsapp": "Message on WhatsApp",
 
     "gallery.eyebrow": "Gallery",
     "gallery.title": "WORKS AROUND THE CITY.",
@@ -110,6 +111,7 @@ window.SATAO_I18N = {
     "agenda.type1": "NEXT ACTION",
     "agenda.next.h": "2026 SCHEDULE BEING UPDATED",
     "agenda.next.p1": "Want to get updates on murals, workshops and gatherings? Follow on",
+    "agenda.next.whatsapp": "Get updates on WhatsApp",
     "agenda.status.wait": "STAY TUNED",
     "agenda.arch.date": "ARCH.",
     "agenda.type2": "GATHERING",
@@ -217,6 +219,7 @@ window.SATAO_I18N = {
     "oficinas.card3.h": "Format", "oficinas.card3.p": "Rencontres en présentiel, avec pratique de peinture sur mur ou papier, adaptées à l'âge du groupe et au temps disponible.",
     "oficinas.cta.p": "Vous voulez organiser un atelier, une conférence ou une fresque dans votre école, institution ou événement ?",
     "oficinas.cta.btn": "Demander via Instagram",
+    "oficinas.cta.whatsapp": "Écrire sur WhatsApp",
 
     "gallery.eyebrow": "Galerie",
     "gallery.title": "ŒUVRES DANS LA VILLE.",
@@ -242,6 +245,7 @@ window.SATAO_I18N = {
     "agenda.type1": "PROCHAINE ACTION",
     "agenda.next.h": "AGENDA 2026 EN COURS DE MISE À JOUR",
     "agenda.next.p1": "Vous voulez suivre la programmation de fresques, ateliers et rencontres ? Suivez sur",
+    "agenda.next.whatsapp": "Recevoir les infos sur WhatsApp",
     "agenda.status.wait": "À SUIVRE",
     "agenda.arch.date": "ARCH.",
     "agenda.type2": "RENCONTRE",
