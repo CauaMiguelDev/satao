@@ -1,2 +1,16 @@
+# Dependencies
 node_modules/
 instagram Img/
+
+# Claude Code (worktrees, sessions, internal)
+.claude/
+skill-observations/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
