@@ -78,19 +78,39 @@
   /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
   var progress = document.querySelector("[data-progress]");
   var ticking = false;
+
+  /* Parallax: o JS só publica o deslocamento em --py; o CSS decide como
+     compor (alguns alvos já carregam um rotate próprio e não podem perdê-lo). */
+  var parallaxItems = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+  function paintParallax(vh) {
+    for (var i = 0; i < parallaxItems.length; i++) {
+      var el = parallaxItems[i];
+      var r = el.getBoundingClientRect();
+      // Fora da tela (com folga) não custa frame.
+      if (r.bottom < -240 || r.top > vh + 240) continue;
+      var speed = parseFloat(el.getAttribute("data-parallax")) || 0.12;
+      var center = r.top + r.height / 2;
+      var p = (center - vh / 2) / (vh / 2 + r.height / 2); // -1 .. 1
+      el.style.setProperty("--py", (p * speed * 100).toFixed(1) + "px");
+    }
+  }
+
   function paintScroll() {
     var y = window.scrollY || window.pageYOffset || 0;
+    var vh = window.innerHeight;
     if (topbar) topbar.classList.toggle("is-scrolled", y > 40);
     if (progress) {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var max = document.documentElement.scrollHeight - vh;
       var ratio = max > 0 ? Math.min(Math.max(y / max, 0), 1) : 0;
       progress.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
     }
-    if (toTop) toTop.classList.toggle("is-shown", y > window.innerHeight * 0.7 && !footerInView);
+    if (toTop) toTop.classList.toggle("is-shown", y > vh * 0.7 && !footerInView);
     if (heroVideo && !reduceMotion) {
-      var hp = Math.min(Math.max(y / window.innerHeight, 0), 1);
-      heroVideo.style.transform = "translateY(" + (hp * 3).toFixed(2) + "%) scale(" + (1 + hp * 0.1).toFixed(4) + ")";
+      var hp = Math.min(Math.max(y / vh, 0), 1);
+      // Mais profundidade que antes: o fundo desce enquanto o texto sobe.
+      heroVideo.style.transform = "translateY(" + (hp * 9).toFixed(2) + "%) scale(" + (1 + hp * 0.14).toFixed(4) + ")";
     }
+    if (!reduceMotion && parallaxItems.length) paintParallax(vh);
     ticking = false;
   }
   function onScroll() {
@@ -267,6 +287,35 @@
     });
   }
 
+  /* ---- Botões magnéticos: o CTA principal puxa na direção do cursor ---- */
+  var magnets = Array.prototype.slice.call(
+    document.querySelectorAll(".hero-actions .button, .closing-actions .button, .oficinas-cta .button")
+  );
+  if (magnets.length && !reduceMotion && window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    magnets.forEach(function (btn) {
+      var mRAF = null, curX = 0, curY = 0, tgtX = 0, tgtY = 0;
+      var mStep = function () {
+        curX += (tgtX - curX) * 0.18;
+        curY += (tgtY - curY) * 0.18;
+        btn.style.setProperty("--mag-x", curX.toFixed(2) + "px");
+        btn.style.setProperty("--mag-y", curY.toFixed(2) + "px");
+        if (Math.abs(tgtX - curX) > 0.1 || Math.abs(tgtY - curY) > 0.1) {
+          mRAF = window.requestAnimationFrame(mStep);
+        } else { mRAF = null; }
+      };
+      btn.addEventListener("mousemove", function (e) {
+        var r = btn.getBoundingClientRect();
+        tgtX = ((e.clientX - r.left) / r.width - 0.5) * 13;
+        tgtY = ((e.clientY - r.top) / r.height - 0.5) * 8;
+        if (mRAF === null) mRAF = window.requestAnimationFrame(mStep);
+      });
+      btn.addEventListener("mouseleave", function () {
+        tgtX = 0; tgtY = 0;
+        if (mRAF === null) mRAF = window.requestAnimationFrame(mStep);
+      });
+    });
+  }
+
   /* ---- Kinetic ticker: seamless, sempre preenchido + boost pelo scroll ---- */
   var ticker = document.querySelector(".ticker");
   var track = document.querySelector(".ticker-track");
@@ -334,6 +383,7 @@
   /* ---- Filtro da galeria por categoria ---- */
   var galleryFilters = Array.prototype.slice.call(document.querySelectorAll(".gallery-filter"));
   var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item"));
+  var galleryGrid = document.querySelector(".gallery-grid");
   if (galleryFilters.length && galleryItems.length) {
     galleryFilters.forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -343,10 +393,23 @@
           b.classList.toggle("is-active", active);
           b.setAttribute("aria-pressed", active ? "true" : "false");
         });
+        var shown = 0;
         galleryItems.forEach(function (item) {
           var show = cat === "all" || item.getAttribute("data-cat") === cat;
           item.classList.toggle("is-hidden", !show);
+          item.classList.remove("is-entering");
+          if (show) {
+            item.style.setProperty("--stagger", Math.min(shown, 11) * 35 + "ms");
+            shown++;
+          }
         });
+        // Reflow forçado: sem isso a animação de entrada não reinicia.
+        if (galleryGrid) void galleryGrid.offsetWidth;
+        if (!reduceMotion) {
+          galleryItems.forEach(function (item) {
+            if (!item.classList.contains("is-hidden")) item.classList.add("is-entering");
+          });
+        }
         if (typeof refreshVisibleGalleryImgs === "function") refreshVisibleGalleryImgs();
       });
     });
