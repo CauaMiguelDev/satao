@@ -214,18 +214,92 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .atuaca
 /* ===== Agenda: mesma abertura das demais seções ===== */
 .agenda-head-main{display:block}
 .agenda-eyebrow{margin:0 0 1.2rem;color:var(--red-hot);font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.16em}
-/* ===== Nav: uma linha sempre. O descritor é dica de hover, nunca 2ª linha ===== */
+/* ===== Nav flutuante arredondado =====
+   A barra vira uma pílula de vidro solta, sem encostar nas bordas.
+   Regra de forma: o nav é a única camada arredondada do site (é chrome
+   sobreposto, não conteúdo). O resto segue reto, como o traço da marca. */
+.topbar{--nav-gap:.85rem}
 @media (min-width:761px){
-/* Teto de altura: a barra não pode comer a dobra. ~76px em repouso, ~71px condensada. */
-.topbar{padding-top:.92rem;padding-bottom:.92rem}
+.topbar{
+  top:var(--nav-gap);
+  left:clamp(.75rem,2.2vw,1.9rem);
+  right:clamp(.75rem,2.2vw,1.9rem);
+  width:auto;
+  gap:1.1rem;
+  padding:.6rem .6rem .6rem 1.5rem;
+  border:1px solid rgba(242,232,221,.18);
+  border-radius:999px;
+  background:transparent;
+  box-shadow:0 20px 50px -26px rgba(0,0,0,.95);
+  transition:padding .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease);
+}
+.topbar.is-scrolled{
+  padding-top:.46rem;padding-bottom:.46rem;
+  border-color:rgba(242,232,221,.28);
+  box-shadow:0 24px 56px -24px rgba(0,0,0,1);
+}
 .topbar nav{flex-wrap:nowrap}
 .topbar nav a{white-space:nowrap}
+/* Dentro de uma pílula, um balão solto embaixo lê como erro. E os rótulos
+   já se explicam: História, Galeria, Agenda. Fora o ruído. */
+.topbar nav a .navlink-sub{display:none}
 /* O rótulo sobe de leve e o número acende: o alvo fica óbvio antes do clique. */
 .topbar nav a .navlink-label{transition:transform .32s var(--ease)}
 .topbar nav a:hover .navlink-label,.topbar nav a:focus-visible .navlink-label{transform:translateY(-.12rem)}
 .topbar nav a:hover .navlink-index,.topbar nav a:focus-visible .navlink-index{color:var(--red-hot);opacity:1;transform:translateY(-.1rem)}
-/* Sublinhado do item ativo: mais encorpado e na cor da marca. */
 .topbar nav a.is-active .navlink-label::after{height:2px;bottom:-.32rem;background:var(--red-hot)}
+}
+/* O vidro mora no ::before, nunca no .topbar. backdrop-filter (como filter e
+   transform) faz do elemento um bloco de contenção, e o painel fixo do menu
+   passaria a ser posicionado dentro da pílula em vez da tela. */
+.topbar::before{
+  opacity:1;
+  border-radius:inherit;
+  background:rgba(20,9,11,.46);
+  -webkit-backdrop-filter:blur(16px) saturate(1.3);
+  backdrop-filter:blur(16px) saturate(1.3);
+  transition:background-color .4s var(--ease)
+}
+.topbar.is-scrolled::before{background:rgba(20,9,11,.76)}
+/* Os controles internos acompanham a forma da pílula. */
+.lang-switch{border-radius:999px}
+.lang-btn{border-radius:999px}
+.topbar-action{border-radius:999px}
+.nav-toggle{border-radius:999px}
+/* A barra de progresso não pode vazar do canto arredondado: vira uma
+   linha fina embutida na base da pílula. */
+.scroll-progress{top:auto;bottom:.3rem;left:1.5rem;right:1.5rem;width:auto;height:2px;border-radius:999px}
+.scroll-progress span{border-radius:inherit}
+/* Âncoras precisam limpar a pílula flutuante. */
+#sobre,#historia,#trajetoria,#legado,#atuacao,#oficinas,#galeria,#territorio,#agenda,#imprensa{scroll-margin-top:7rem}
+@media (max-width:760px){
+.topbar{
+  top:.55rem;left:.55rem;right:.55rem;width:auto;
+  gap:.6rem;
+  padding:.5rem .5rem .5rem 1.05rem;
+  border:1px solid rgba(242,232,221,.18);
+  border-radius:1.5rem;
+  background:transparent;
+  box-shadow:0 18px 40px -22px rgba(0,0,0,.95);
+}
+.topbar.is-scrolled{padding-top:.42rem;padding-bottom:.42rem}
+/* Aberto, o painel cobre a pílula: a sombra dela sobraria por fora. */
+.topbar.nav-open{box-shadow:none;border-color:transparent}
+/* O painel nasce alinhado à pílula, com a mesma margem e o mesmo raio. */
+.topbar nav{
+  top:.55rem;left:.55rem;right:.55rem;
+  /* A regra original fixa width:100%, que sobrepõe o `right` e faz o painel
+     transbordar. Sem isto ele nasce 9px mais largo que a pílula. */
+  width:auto;
+  padding:4.7rem 1.3rem 1.6rem;
+  border:1px solid rgba(242,232,221,.18);
+  border-radius:1.5rem;
+  transform:translateY(-115%);
+}
+/* Reafirma o estado aberto depois da regra acima: sem isto o painel fica
+   preso fora da tela mesmo com a classe nav-open aplicada. */
+.topbar.nav-open nav{transform:translateY(0)}
+.scroll-progress{left:1.1rem;right:1.1rem;bottom:.26rem}
 }
 /* ===== Galeria — obras pela cidade ===== */
 .gallery{background:var(--ink)}
