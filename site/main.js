@@ -187,7 +187,7 @@
     });
 
     // Close the menu if the viewport grows past the mobile breakpoint.
-    var desktopMq = window.matchMedia("(min-width: 761px)");
+    var desktopMq = window.matchMedia("(min-width: 1024px)");
     var onBreakpoint = function (event) { if (event.matches) closeNav(); };
     if (desktopMq.addEventListener) desktopMq.addEventListener("change", onBreakpoint);
     else if (desktopMq.addListener) desktopMq.addListener(onBreakpoint);
