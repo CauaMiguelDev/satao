@@ -1,9 +1,9 @@
-const CACHE_NAME = "satao-v3-nav";
+const CACHE_NAME = "satao-v4-insta";
 const CORE_ASSETS = [
   "./",
   "index.html",
-  "style.css?v=nav-3",
-  "main.js?v=nav-3",
+  "style.css?v=insta-4",
+  "main.js?v=insta-4",
   "manifest.json",
   "media/hero-still-2k.jpg",
 ];

@@ -133,6 +133,7 @@ window.SATAO_I18N = {
     "closing.btn2": "Follow the schedule",
 
     "footer.tagline": "Graffiti & urban culture",
+    "insta.eyebrow": "On Instagram", "insta.title": "STRAIGHT FROM THE HOOD.",
     "footer.bio": "Graffiti artist, journalist and cultural producer. From Ceilândia (DF) to the walls of Brazil, and all the way to France."
   },
   fr: {
@@ -267,6 +268,7 @@ window.SATAO_I18N = {
     "closing.btn2": "Suivre l'agenda",
 
     "footer.tagline": "Graffiti & culture urbaine",
+    "insta.eyebrow": "Sur Instagram", "insta.title": "DROIT DE LA QUEBRADA.",
     "footer.bio": "Graffeur, journaliste et producteur culturel. De Ceilândia (DF) aux murs du Brésil, et jusqu'en France."
   }
 };
