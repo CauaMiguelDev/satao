@@ -1,9 +1,9 @@
-const CACHE_NAME = "satao-v2-gallery";
+const CACHE_NAME = "satao-v3-nav";
 const CORE_ASSETS = [
   "./",
   "index.html",
-  "style.css?v=gallery-2",
-  "main.js",
+  "style.css?v=nav-3",
+  "main.js?v=nav-3",
   "manifest.json",
   "media/hero-still-2k.jpg",
 ];
