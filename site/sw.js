@@ -1,9 +1,13 @@
-const CACHE_NAME = "satao-v4-insta";
+const CACHE_NAME = "satao-v15-comunidade";
 const CORE_ASSETS = [
   "./",
   "index.html",
-  "style.css?v=insta-4",
-  "main.js?v=insta-4",
+  "style.css?v=community-1",
+  "main.js?v=community-1",
+  "layout.css?v=ag-1",
+  "i18n.js?v=community-1",
+  "supabase-config.js?v=community-1",
+  "community.js?v=community-1",
   "manifest.json",
   "media/hero-still-2k.jpg",
 ];

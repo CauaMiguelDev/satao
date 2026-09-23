@@ -73,6 +73,7 @@
   var toTop = document.querySelector("[data-to-top]");
   var footer = document.querySelector(".footer");
   var heroVideo = document.querySelector(".hero-art-video");
+  var heroInner = document.querySelector(".hero-inner");
   var footerInView = false;
 
   /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
@@ -89,7 +90,9 @@
       // Fora da tela (com folga) não custa frame.
       if (r.bottom < -240 || r.top > vh + 240) continue;
       var speed = parseFloat(el.getAttribute("data-parallax")) || 0.12;
-      var center = r.top + r.height / 2;
+      // Compensa a translação já aplicada para não criar feedback na medição.
+      var offset = parseFloat(el.style.getPropertyValue("--py")) || 0;
+      var center = r.top - offset + r.height / 2;
       var p = (center - vh / 2) / (vh / 2 + r.height / 2); // -1 .. 1
       el.style.setProperty("--py", (p * speed * 100).toFixed(1) + "px");
     }
@@ -105,10 +108,17 @@
       progress.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
     }
     if (toTop) toTop.classList.toggle("is-shown", y > vh * 0.7 && !footerInView);
-    if (heroVideo && !reduceMotion) {
+    if (heroVideo && !reduceMotion && y < vh * 1.5) {
       var hp = Math.min(Math.max(y / vh, 0), 1);
       // Mais profundidade que antes: o fundo desce enquanto o texto sobe.
-      heroVideo.style.transform = "translateY(" + (hp * 9).toFixed(2) + "%) scale(" + (1 + hp * 0.14).toFixed(4) + ")";
+      heroVideo.style.transform = "translateY(" + (hp * 3).toFixed(2) + "%) scale(1.08)";
+    }
+    if (heroInner && !reduceMotion) {
+      // Camada intermediária: o texto recolhe mais rápido que a rolagem,
+      // abrindo espaço para a próxima seção e reforçando a profundidade.
+      var hip = Math.min(Math.max(y / (vh * 0.82), 0), 1);
+      heroInner.style.transform = "translate3d(0," + (hip * -3.2).toFixed(2) + "%,0)";
+      heroInner.style.opacity = "1";
     }
     if (!reduceMotion && parallaxItems.length) paintParallax(vh);
     ticking = false;
@@ -119,6 +129,35 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
   paintScroll();
+
+  /* Vídeo: pausa explícita, fora da tela e com preferência por menos movimento. */
+  var videoControl = document.querySelector(".video-control");
+  var videoPausedByUser = reduceMotion;
+  var videoInView = true;
+  function syncVideo() {
+    if (!heroVideo) return;
+    if (videoPausedByUser || !videoInView || document.hidden) heroVideo.pause();
+    else heroVideo.play().catch(function () {});
+    if (videoControl) {
+      var paused = heroVideo.paused;
+      var lang = document.documentElement.lang;
+      var labels = lang === "en" ? ["Pause video", "Play video"] : lang === "fr" ? ["Mettre la vidéo en pause", "Lire la vidéo"] : ["Pausar vídeo", "Reproduzir vídeo"];
+      videoControl.setAttribute("aria-pressed", String(paused));
+      videoControl.setAttribute("aria-label", labels[paused ? 1 : 0]);
+    }
+  }
+  if (heroVideo && videoControl) {
+    videoControl.removeAttribute("data-i18n-aria");
+    videoControl.addEventListener("click", function () { videoPausedByUser = !videoPausedByUser; syncVideo(); });
+    heroVideo.addEventListener("play", syncVideo);
+    heroVideo.addEventListener("pause", syncVideo);
+    document.addEventListener("visibilitychange", syncVideo);
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (entries) {
+      videoInView = entries[0].isIntersecting;
+      syncVideo();
+    }).observe(heroVideo);
+    syncVideo();
+  }
 
   if (toTop) {
     toTop.addEventListener("click", function () {
@@ -143,6 +182,7 @@
     navLinks.forEach(function (a) {
       a.classList.toggle("is-active", a.getAttribute("href") === "#" + id);
     });
+    syncNavIndicator();
   }
   if ("IntersectionObserver" in window && sections.length) {
     var spy = new IntersectionObserver(function (entries) {
@@ -191,6 +231,41 @@
     var onBreakpoint = function (event) { if (event.matches) closeNav(); };
     if (desktopMq.addEventListener) desktopMq.addEventListener("change", onBreakpoint);
     else if (desktopMq.addListener) desktopMq.addListener(onBreakpoint);
+  }
+
+  /* ---- Indicador deslizante do nav (desktop): um traço só, que segue o
+     hover/foco e volta para o link ativo. Só existe acima de 1024px (CSS
+     esconde em telas menores), então some cedo se não houver o que medir. */
+  var navIndicator = document.querySelector(".nav-indicator");
+  function syncNavIndicator() {
+    if (!navIndicator || !primaryNav) return;
+    var active = primaryNav.querySelector("a.is-active:not(.nav-cta)");
+    moveNavIndicator(active);
+  }
+  function moveNavIndicator(link) {
+    if (!navIndicator) return;
+    if (!link || navIndicator.offsetParent === null) {
+      navIndicator.classList.remove("is-ready");
+      return;
+    }
+    var label = link.querySelector(".navlink-label") || link;
+    var navRect = primaryNav.getBoundingClientRect();
+    var labelRect = label.getBoundingClientRect();
+    navIndicator.style.transform =
+      "translateX(" + (labelRect.left - navRect.left).toFixed(2) + "px) scaleX(" + labelRect.width.toFixed(2) + ")";
+    navIndicator.classList.add("is-ready");
+  }
+  if (navIndicator && primaryNav && navLinks.length) {
+    navLinks.forEach(function (a) {
+      a.addEventListener("mouseenter", function () { moveNavIndicator(a); });
+      a.addEventListener("focus", function () { moveNavIndicator(a); });
+    });
+    primaryNav.addEventListener("mouseleave", syncNavIndicator);
+    primaryNav.addEventListener("focusout", function (event) {
+      if (!primaryNav.contains(event.relatedTarget)) syncNavIndicator();
+    });
+    window.addEventListener("resize", syncNavIndicator);
+    syncNavIndicator();
   }
 
   /* ---- Cursor-follow glow (Atuação) ---- */
@@ -287,12 +362,12 @@
     });
   }
 
-  /* ---- Botões magnéticos: o CTA principal puxa na direção do cursor ---- */
-  var magnets = Array.prototype.slice.call(
-    document.querySelectorAll(".hero-actions .button, .closing-actions .button, .oficinas-cta .button")
-  );
-  if (magnets.length && !reduceMotion && window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
-    magnets.forEach(function (btn) {
+  /* ---- Botões: mesmo vocabulário em todo lugar ----
+     Magnético (puxa na direção do cursor) + brilho de clique (spray),
+     aplicados a todo .button, não só aos CTAs que já tinham. */
+  var allButtons = Array.prototype.slice.call(document.querySelectorAll(".button"));
+  if (allButtons.length && !reduceMotion && window.matchMedia("(hover:hover) and (pointer:fine)").matches) {
+    allButtons.forEach(function (btn) {
       var mRAF = null, curX = 0, curY = 0, tgtX = 0, tgtY = 0;
       var mStep = function () {
         curX += (tgtX - curX) * 0.18;
@@ -312,6 +387,21 @@
       btn.addEventListener("mouseleave", function () {
         tgtX = 0; tgtY = 0;
         if (mRAF === null) mRAF = window.requestAnimationFrame(mStep);
+      });
+    });
+  }
+  if (allButtons.length && !reduceMotion) {
+    allButtons.forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        var r = btn.getBoundingClientRect();
+        btn.style.setProperty("--click-x", (e.clientX - r.left).toFixed(1) + "px");
+        btn.style.setProperty("--click-y", (e.clientY - r.top).toFixed(1) + "px");
+        btn.classList.remove("is-clicked");
+        void btn.offsetWidth; // reinicia a animação em cliques seguidos
+        btn.classList.add("is-clicked");
+      });
+      btn.addEventListener("animationend", function (e) {
+        if (e.animationName === "button-spray") btn.classList.remove("is-clicked");
       });
     });
   }
@@ -388,6 +478,7 @@
     galleryFilters.forEach(function (btn) {
       btn.addEventListener("click", function () {
         var cat = btn.getAttribute("data-filter");
+        if (galleryGrid) galleryGrid.classList.toggle("is-filtered", cat !== "all");
         galleryFilters.forEach(function (b) {
           var active = b === btn;
           b.classList.toggle("is-active", active);
@@ -427,6 +518,9 @@
   if (allGalleryImgs.length) {
     var lb = document.createElement("div");
     lb.className = "lightbox";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.setAttribute("aria-label", "Galeria");
     lb.setAttribute("aria-hidden", "true");
     lb.innerHTML =
       '<button class="lightbox-close" type="button" aria-label="Fechar galeria" data-i18n-aria="aria.closeGallery">×</button>' +
@@ -461,7 +555,12 @@
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
     };
     allGalleryImgs.forEach(function (img) {
-      img.addEventListener("click", function () { openLb(galleryImgs.indexOf(img)); });
+      img.setAttribute("tabindex", "0");
+      img.setAttribute("role", "button");
+      img.addEventListener("click", function () { img.focus(); openLb(galleryImgs.indexOf(img)); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(galleryImgs.indexOf(img)); }
+      });
     });
     lb.querySelector(".lightbox-close").addEventListener("click", closeLb);
     lb.querySelector(".lightbox-prev").addEventListener("click", function (e) { e.stopPropagation(); showImg(lbIndex - 1); });
@@ -469,6 +568,12 @@
     lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
     document.addEventListener("keydown", function (e) {
       if (!lb.classList.contains("is-open")) return;
+      if (e.key === "Tab") {
+        var controls = Array.prototype.slice.call(lb.querySelectorAll("button"));
+        var index = controls.indexOf(document.activeElement);
+        e.preventDefault();
+        controls[(index + (e.shiftKey ? -1 : 1) + controls.length) % controls.length].focus();
+      }
       if (e.key === "Escape") closeLb();
       else if (e.key === "ArrowLeft") showImg(lbIndex - 1);
       else if (e.key === "ArrowRight") showImg(lbIndex + 1);
@@ -493,8 +598,19 @@
     i18nItems.push({ el: el, key: key, attr: "aria-label", pt: el.getAttribute("aria-label") });
   });
   var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang-btn"));
+  var langIndicator = document.querySelector(".lang-indicator");
+  function moveLangIndicator() {
+    if (!langIndicator) return;
+    var active = langButtons.filter(function (b) { return b.classList.contains("is-active"); })[0];
+    if (!active) return;
+    var trackRect = langIndicator.parentElement.getBoundingClientRect();
+    var btnRect = active.getBoundingClientRect();
+    langIndicator.style.transform =
+      "translateX(" + (btnRect.left - trackRect.left).toFixed(2) + "px) scaleX(" + btnRect.width.toFixed(2) + ")";
+  }
   function applyLang(lang) {
     currentLang = lang;
+    window.SATAO_LANG = lang; // lido pelos widgets de comunidade/avaliação para status dinâmicos
     document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
     var dict = (lang !== "pt" && window.SATAO_I18N && window.SATAO_I18N[lang]) || {};
     i18nItems.forEach(function (item) {
@@ -508,11 +624,15 @@
       b.classList.toggle("is-active", active);
       b.setAttribute("aria-pressed", active ? "true" : "false");
     });
+    moveLangIndicator();
+    syncVideo();
     try { localStorage.setItem("satao-lang", lang); } catch (e) {}
   }
   langButtons.forEach(function (btn) {
     btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
   });
+  window.addEventListener("resize", moveLangIndicator);
+  moveLangIndicator();
   var savedLang = "pt";
   try { savedLang = localStorage.getItem("satao-lang") || "pt"; } catch (e) {}
   if (savedLang !== "pt" && window.SATAO_I18N && window.SATAO_I18N[savedLang]) applyLang(savedLang);
