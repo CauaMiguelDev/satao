@@ -570,3 +570,17 @@ h1,h2,h3,.section-title,.hero-title{font-feature-settings:"kern" 1,"liga" 1;text
 .community-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .community-photo figcaption{position:absolute;inset:auto 0 0;padding:.5rem .6rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.03em;color:var(--paper);background:linear-gradient(transparent,rgba(20,9,11,.85))}
 @media (max-width:760px){.community-gallery-grid{grid-template-columns:repeat(2,1fr)}}
+.star-rating{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:.15rem;border:0;padding:0;margin:0}
+.star-rating legend{width:100%;font-family:var(--mono);font-size:.78rem;color:var(--paper-muted);margin:0 0 .4rem;padding:0}
+.star-rating input{position:absolute;opacity:0;width:1px;height:1px}
+.star-rating label{cursor:pointer;font-size:1.7rem;line-height:1;color:var(--line)}
+.star-rating label::before{content:"\2605"}
+.star-rating input:checked~label,.star-rating label:hover,.star-rating label:hover~label{color:var(--red-hot)}
+.star-rating input:focus-visible+label{outline:2px solid var(--red-hot);outline-offset:2px}
+.reviews-block{margin-top:3rem}
+.reviews-list-msg{font-family:var(--mono);font-size:.85rem;color:var(--paper-muted)}
+.reviews-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem}
+.review-card{padding:1.1rem 1.2rem;background:var(--ink-soft);border:1px solid var(--line)}
+.review-card strong{display:block;color:var(--red-hot);letter-spacing:.05em;margin-bottom:.4rem}
+.review-card p{margin:0 0 .5rem;font-size:.92rem}
+.review-card cite{font-family:var(--mono);font-size:.72rem;font-style:normal;color:var(--paper-muted)}

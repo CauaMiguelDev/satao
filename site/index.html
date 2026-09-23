@@ -25,9 +25,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=community-1" />
+  <link rel="stylesheet" href="style.css?v=community-2" />
   <link rel="stylesheet" href="layout.css?v=ag-1" />
-  <script src="i18n.js?v=community-1"></script>
+  <script src="i18n.js?v=community-2"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -288,10 +288,44 @@
           <p class="form-status" data-state="idle" role="status" aria-live="polite"></p>
         </form>
       </div>
+      <div class="community-review-block reveal">
+        <form id="review-form" class="community-form" novalidate>
+          <h3 data-i18n="review.h">Avalie o site</h3>
+          <fieldset class="star-rating">
+            <legend data-i18n="review.rating">Sua nota</legend>
+            <input type="radio" id="star5" name="rating" value="5" /><label for="star5">5 estrelas</label>
+            <input type="radio" id="star4" name="rating" value="4" /><label for="star4">4 estrelas</label>
+            <input type="radio" id="star3" name="rating" value="3" /><label for="star3">3 estrelas</label>
+            <input type="radio" id="star2" name="rating" value="2" /><label for="star2">2 estrelas</label>
+            <input type="radio" id="star1" name="rating" value="1" /><label for="star1">1 estrela</label>
+          </fieldset>
+          <label class="form-field">
+            <span data-i18n="review.comment">Comentário (opcional)</span>
+            <textarea name="comment" maxlength="500" rows="3"></textarea>
+          </label>
+          <label class="form-field">
+            <span data-i18n="review.name">Seu nome (opcional)</span>
+            <input type="text" name="name" maxlength="60" />
+          </label>
+          <label class="form-honeypot" aria-hidden="true">
+            <span>Website</span>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+          <button type="submit" class="button button-outline">
+            <span data-i18n="review.submit">Enviar avaliação</span>
+          </button>
+          <p class="form-status" data-state="idle" role="status" aria-live="polite"></p>
+        </form>
+      </div>
       <div class="community-gallery">
         <h3 data-i18n="community.gallery.h">Galeria da comunidade</h3>
         <p class="community-gallery-msg" data-state="loading" role="status" aria-live="polite" data-i18n="community.gallery.loading">Carregando fotos…</p>
         <div class="community-gallery-grid" hidden></div>
+      </div>
+      <div class="reviews-block">
+        <h3 data-i18n="review.list.h">O que dizem sobre o site</h3>
+        <p class="reviews-list-msg" data-state="loading" role="status" aria-live="polite" data-i18n="review.list.loading">Carregando avaliações…</p>
+        <div class="reviews-list" hidden></div>
       </div>
     </section>
     <section class="press section-pad" id="imprensa" aria-labelledby="press-title">
@@ -348,7 +382,7 @@
   <div class="cursor-dot" aria-hidden="true"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="supabase-config.js?v=community-1"></script>
-  <script src="community.js?v=community-2"></script>
+  <script src="community.js?v=community-3"></script>
   <script src="main.js?v=community-1"></script>
 </body>
 </html>

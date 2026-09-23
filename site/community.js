@@ -162,6 +162,93 @@
     });
   }
 
+  /* ---- Formulário: avaliar o site ---- */
+  var reviewForm = document.getElementById("review-form");
+  if (reviewForm) {
+    reviewForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var statusEl = reviewForm.querySelector(".form-status");
+      var sb = getClient();
+      if (!sb) {
+        setStatus(statusEl, "error", t("review.status.unavailable", "Envio indisponível no momento. Tente novamente mais tarde."));
+        return;
+      }
+      var data = new FormData(reviewForm);
+      if (data.get("website")) return; // honeypot
+
+      var rating = parseInt(data.get("rating"), 10);
+      if (!rating || rating < 1 || rating > 5) {
+        setStatus(statusEl, "error", t("review.status.noRating", "Escolha uma nota de 1 a 5."));
+        return;
+      }
+      var comment = (data.get("comment") || "").toString().trim().slice(0, 500);
+      var name = (data.get("name") || "").toString().trim().slice(0, 60);
+      var submitBtn = reviewForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      setStatus(statusEl, "loading", t("review.status.sending", "Enviando…"));
+
+      sb.from("reviews")
+        .insert({ rating: rating, comment: comment || null, name: name || null, client_token: clientToken() })
+        .then(function (res) {
+          if (res.error) throw res.error;
+          reviewForm.reset();
+          setStatus(statusEl, "success", t("review.status.sent", "Obrigado! Sua avaliação foi enviada."));
+        })
+        .catch(function () {
+          setStatus(statusEl, "error", t("review.status.error", "Não foi possível enviar. Tente novamente."));
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+        });
+    });
+  }
+
+  /* ---- Lista de avaliações aprovadas ---- */
+  var reviewsMsg = document.querySelector(".reviews-list-msg");
+  var reviewsList = document.querySelector(".reviews-list");
+  if (reviewsList) {
+    var sbReviews = getClient();
+    if (!sbReviews) {
+      setStatus(reviewsMsg, "error", t("review.list.error", "Não foi possível carregar as avaliações."));
+    } else {
+      sbReviews
+        .from("reviews")
+        .select("rating,comment,name")
+        .eq("approved", true)
+        .order("created_at", { ascending: false })
+        .limit(20)
+        .then(function (res) {
+          if (res.error) throw res.error;
+          var rows = res.data || [];
+          if (!rows.length) {
+            setStatus(reviewsMsg, "empty", t("review.list.empty", "Ainda não há avaliações aprovadas."));
+            return;
+          }
+          reviewsMsg.hidden = true;
+          reviewsList.hidden = false;
+          rows.forEach(function (row) {
+            var art = document.createElement("article");
+            art.className = "review-card";
+            var stars = document.createElement("strong");
+            stars.textContent = "★".repeat(row.rating) + "☆".repeat(5 - row.rating);
+            art.appendChild(stars);
+            if (row.comment) {
+              var p = document.createElement("p");
+              p.textContent = row.comment;
+              art.appendChild(p);
+            }
+            var cite = document.createElement("cite");
+            cite.textContent = row.name || t("review.anon", "Visitante");
+            art.appendChild(cite);
+            reviewsList.appendChild(art);
+          });
+        })
+        .catch(function () {
+          setStatus(reviewsMsg, "error", t("review.list.error", "Não foi possível carregar as avaliações."));
+        });
+    }
+  }
+
   /* ---- Galeria da comunidade ---- */
   var galleryMsg = document.querySelector(".community-gallery-msg");
   var galleryGrid = document.querySelector(".community-gallery-grid");
