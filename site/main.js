@@ -470,53 +470,89 @@
     }
   }
 
-  /* ---- Filtro da galeria por categoria ---- */
+  /* ---- Galeria: filtro por categoria + lightbox ----
+     Os itens iniciais vêm do HTML estático; itens vindos do Supabase
+     (site/community.js, carregados de forma assíncrona) chegam depois
+     que este bloco já rodou, então tudo aqui é pensado para ser
+     re-executável via window.SATAO_REGISTER_GALLERY_ITEMS em vez de
+     capturar um snapshot fixo do DOM. */
   var galleryFilters = Array.prototype.slice.call(document.querySelectorAll(".gallery-filter"));
-  var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item"));
   var galleryGrid = document.querySelector(".gallery-grid");
-  if (galleryFilters.length && galleryItems.length) {
+  var galleryItems = [];
+  var allGalleryImgs = [];
+  var galleryImgs = [];
+  var activeGalleryFilter = "all";
+
+  function refreshVisibleGalleryImgs() {
+    galleryImgs = allGalleryImgs.filter(function (img) {
+      var fig = img.closest("figure");
+      return fig && !fig.classList.contains("is-hidden");
+    });
+  }
+
+  function applyGalleryFilter(cat) {
+    activeGalleryFilter = cat;
+    if (galleryGrid) galleryGrid.classList.toggle("is-filtered", cat !== "all");
+    var shown = 0;
+    galleryItems.forEach(function (item) {
+      var show = cat === "all" || item.getAttribute("data-cat") === cat;
+      item.classList.toggle("is-hidden", !show);
+      item.classList.remove("is-entering");
+      if (show) {
+        item.style.setProperty("--stagger", Math.min(shown, 11) * 35 + "ms");
+        shown++;
+      }
+    });
+    if (galleryGrid) void galleryGrid.offsetWidth; // força reflow p/ reiniciar a animação de entrada
+    if (!reduceMotion) {
+      galleryItems.forEach(function (item) {
+        if (!item.classList.contains("is-hidden")) item.classList.add("is-entering");
+      });
+    }
+    refreshVisibleGalleryImgs();
+  }
+
+  if (galleryFilters.length) {
     galleryFilters.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var cat = btn.getAttribute("data-filter");
-        if (galleryGrid) galleryGrid.classList.toggle("is-filtered", cat !== "all");
         galleryFilters.forEach(function (b) {
           var active = b === btn;
           b.classList.toggle("is-active", active);
           b.setAttribute("aria-pressed", active ? "true" : "false");
         });
-        var shown = 0;
-        galleryItems.forEach(function (item) {
-          var show = cat === "all" || item.getAttribute("data-cat") === cat;
-          item.classList.toggle("is-hidden", !show);
-          item.classList.remove("is-entering");
-          if (show) {
-            item.style.setProperty("--stagger", Math.min(shown, 11) * 35 + "ms");
-            shown++;
-          }
-        });
-        // Reflow forçado: sem isso a animação de entrada não reinicia.
-        if (galleryGrid) void galleryGrid.offsetWidth;
-        if (!reduceMotion) {
-          galleryItems.forEach(function (item) {
-            if (!item.classList.contains("is-hidden")) item.classList.add("is-entering");
-          });
-        }
-        if (typeof refreshVisibleGalleryImgs === "function") refreshVisibleGalleryImgs();
+        applyGalleryFilter(btn.getAttribute("data-filter"));
       });
     });
   }
 
-  /* ---- Lightbox da galeria (clicar para ampliar) ---- */
-  var allGalleryImgs = Array.prototype.slice.call(document.querySelectorAll(".gallery-item img"));
-  var galleryImgs = allGalleryImgs;
-  var refreshVisibleGalleryImgs = function () {
-    galleryImgs = allGalleryImgs.filter(function (img) {
-      var fig = img.closest("figure");
-      return fig && !fig.classList.contains("is-hidden");
-    });
-  };
-  if (allGalleryImgs.length) {
-    var lb = document.createElement("div");
+  var lb, lbImg, lbCap, lbIndex = -1, lbLastFocus = null;
+  function showImg(i) {
+    if (!galleryImgs.length) return;
+    lbIndex = (i + galleryImgs.length) % galleryImgs.length;
+    var src = galleryImgs[lbIndex];
+    lbImg.setAttribute("src", src.currentSrc || src.src);
+    lbImg.setAttribute("alt", src.getAttribute("alt") || "");
+    var fig = src.closest("figure");
+    var cap = fig ? fig.querySelector("figcaption") : null;
+    lbCap.textContent = cap ? cap.textContent : "";
+  }
+  function openLb(i) {
+    lbLastFocus = document.activeElement;
+    showImg(i);
+    lb.classList.add("is-open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.classList.add("nav-lock");
+    lb.querySelector(".lightbox-close").focus();
+  }
+  function closeLb() {
+    lb.classList.remove("is-open");
+    lb.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("nav-lock");
+    if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
+  }
+  function ensureLightbox() {
+    if (lb) return;
+    lb = document.createElement("div");
     lb.className = "lightbox";
     lb.setAttribute("role", "dialog");
     lb.setAttribute("aria-modal", "true");
@@ -528,40 +564,8 @@
       '<figure class="lightbox-fig"><img alt=""><figcaption></figcaption></figure>' +
       '<button class="lightbox-nav lightbox-next" type="button" aria-label="Próxima imagem" data-i18n-aria="aria.nextImg">›</button>';
     document.body.appendChild(lb);
-    var lbImg = lb.querySelector(".lightbox-fig img");
-    var lbCap = lb.querySelector(".lightbox-fig figcaption");
-    var lbIndex = -1, lbLastFocus = null;
-    var showImg = function (i) {
-      lbIndex = (i + galleryImgs.length) % galleryImgs.length;
-      var src = galleryImgs[lbIndex];
-      lbImg.setAttribute("src", src.currentSrc || src.src);
-      lbImg.setAttribute("alt", src.getAttribute("alt") || "");
-      var fig = src.closest("figure");
-      var cap = fig ? fig.querySelector("figcaption") : null;
-      lbCap.textContent = cap ? cap.textContent : "";
-    };
-    var openLb = function (i) {
-      lbLastFocus = document.activeElement;
-      showImg(i);
-      lb.classList.add("is-open");
-      lb.setAttribute("aria-hidden", "false");
-      document.body.classList.add("nav-lock");
-      lb.querySelector(".lightbox-close").focus();
-    };
-    var closeLb = function () {
-      lb.classList.remove("is-open");
-      lb.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("nav-lock");
-      if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
-    };
-    allGalleryImgs.forEach(function (img) {
-      img.setAttribute("tabindex", "0");
-      img.setAttribute("role", "button");
-      img.addEventListener("click", function () { img.focus(); openLb(galleryImgs.indexOf(img)); });
-      img.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(galleryImgs.indexOf(img)); }
-      });
-    });
+    lbImg = lb.querySelector(".lightbox-fig img");
+    lbCap = lb.querySelector(".lightbox-fig figcaption");
     lb.querySelector(".lightbox-close").addEventListener("click", closeLb);
     lb.querySelector(".lightbox-prev").addEventListener("click", function (e) { e.stopPropagation(); showImg(lbIndex - 1); });
     lb.querySelector(".lightbox-next").addEventListener("click", function (e) { e.stopPropagation(); showImg(lbIndex + 1); });
@@ -579,6 +583,31 @@
       else if (e.key === "ArrowRight") showImg(lbIndex + 1);
     });
   }
+
+  // Registra figuras .gallery-item (estáticas no load, ou anexadas depois
+  // pelo Supabase) no filtro e no lightbox. Idempotente por figura.
+  window.SATAO_REGISTER_GALLERY_ITEMS = function (figures) {
+    if (!figures || !figures.length) return;
+    ensureLightbox();
+    figures.forEach(function (fig) {
+      if (galleryItems.indexOf(fig) !== -1) return;
+      galleryItems.push(fig);
+      var cat = fig.getAttribute("data-cat");
+      fig.classList.toggle("is-hidden", activeGalleryFilter !== "all" && cat !== activeGalleryFilter);
+      var img = fig.querySelector("img");
+      if (!img) return;
+      allGalleryImgs.push(img);
+      img.setAttribute("tabindex", "0");
+      img.setAttribute("role", "button");
+      img.addEventListener("click", function () { img.focus(); openLb(galleryImgs.indexOf(img)); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(galleryImgs.indexOf(img)); }
+      });
+    });
+    refreshVisibleGalleryImgs();
+  };
+
+  window.SATAO_REGISTER_GALLERY_ITEMS(Array.prototype.slice.call(document.querySelectorAll(".gallery-item")));
 
   /* ---- Idioma: PT (padrão) / EN / FR ---- */
   var currentLang = "pt";

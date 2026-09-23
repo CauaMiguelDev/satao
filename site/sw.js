@@ -1,13 +1,13 @@
-const CACHE_NAME = "satao-v17-avaliacao";
+const CACHE_NAME = "satao-v18-galeria";
 const CORE_ASSETS = [
   "./",
   "index.html",
   "style.css?v=community-2",
-  "main.js?v=community-1",
+  "main.js?v=community-2",
   "layout.css?v=ag-1",
   "i18n.js?v=community-2",
   "supabase-config.js?v=community-1",
-  "community.js?v=community-3",
+  "community.js?v=community-4",
   "manifest.json",
   "media/hero-still-2k.jpg",
 ];

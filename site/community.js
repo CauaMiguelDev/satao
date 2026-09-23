@@ -73,8 +73,8 @@
     });
   }
 
-  function publicUrl(sb, path) {
-    return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  function publicUrl(sb, bucket, path) {
+    return sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
   }
 
   /* ---- Formulário: enviar foto ---- */
@@ -275,7 +275,7 @@
             var fig = document.createElement("figure");
             fig.className = "community-photo";
             var img = document.createElement("img");
-            img.src = publicUrl(sb, row.thumb_path);
+            img.src = publicUrl(sb, BUCKET, row.thumb_path);
             img.loading = "lazy";
             img.decoding = "async";
             img.alt = row.caption || t("community.gallery.altFallback", "Foto enviada pela comunidade");
@@ -325,6 +325,46 @@
           });
         })
         .catch(function () {}); // mantém o placeholder estático em caso de erro
+    }
+  }
+
+  /* ---- Galeria oficial dinâmica: itens cadastrados no painel são
+     anexados aos 16 itens estáticos do HTML e registrados no filtro +
+     lightbox existentes (ver window.SATAO_REGISTER_GALLERY_ITEMS em
+     main.js). Sem itens publicados, a galeria estática segue intacta. ---- */
+  var galleryGridEl = document.querySelector(".gallery-grid");
+  if (galleryGridEl) {
+    var sbGallery = getClient();
+    if (sbGallery) {
+      sbGallery
+        .from("gallery_items")
+        .select("title,category,image_path")
+        .eq("published", true)
+        .order("sort_order", { ascending: true })
+        .then(function (res) {
+          if (res.error) throw res.error;
+          var rows = res.data || [];
+          if (!rows.length) return;
+          var figures = rows.map(function (row) {
+            var fig = document.createElement("figure");
+            fig.className = "gallery-item is-visible";
+            fig.setAttribute("data-cat", row.category || "murais");
+            fig.innerHTML =
+              '<span class="gallery-open"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>' +
+              '<img loading="lazy" decoding="async" alt="">' +
+              "<figcaption></figcaption>";
+            var img = fig.querySelector("img");
+            img.src = publicUrl(sbGallery, "gallery", row.image_path);
+            img.alt = row.title || "";
+            fig.querySelector("figcaption").textContent = row.title || "";
+            galleryGridEl.appendChild(fig);
+            return fig;
+          });
+          if (typeof window.SATAO_REGISTER_GALLERY_ITEMS === "function") {
+            window.SATAO_REGISTER_GALLERY_ITEMS(figures);
+          }
+        })
+        .catch(function () {}); // mantém a galeria estática em caso de erro
     }
   }
 })();

@@ -36,6 +36,7 @@
       <button type="button" class="admin-tab is-active" data-tab="reviews" role="tab" aria-selected="true">Avaliações</button>
       <button type="button" class="admin-tab" data-tab="photos" role="tab" aria-selected="false">Fotos da comunidade</button>
       <button type="button" class="admin-tab" data-tab="agenda" role="tab" aria-selected="false">Agenda</button>
+      <button type="button" class="admin-tab" data-tab="gallery" role="tab" aria-selected="false">Galeria</button>
     </nav>
 
     <section class="admin-panel" data-panel="reviews">
@@ -66,10 +67,42 @@
       <p class="admin-msg" data-state="loading" role="status" aria-live="polite">Carregando…</p>
       <div class="admin-list" hidden></div>
     </section>
+
+    <section class="admin-panel" data-panel="gallery" hidden>
+      <form id="gallery-form" class="admin-form" novalidate>
+        <input type="hidden" name="id" />
+        <label class="form-field"><span>Título</span><input type="text" name="title" required /></label>
+        <label class="form-field">
+          <span>Categoria</span>
+          <select name="category" required>
+            <option value="murais">Murais</option>
+            <option value="vagoes">Vagões</option>
+            <option value="tags">Tags</option>
+            <option value="oficinas">Oficinas</option>
+            <option value="bastidores">Bastidores</option>
+            <option value="imprensa">Imprensa</option>
+          </select>
+        </label>
+        <label class="form-field">
+          <span>Imagem (JPG, PNG ou WEBP, até 8 MB)</span>
+          <input type="file" name="image" accept="image/jpeg,image/png,image/webp" />
+        </label>
+        <p class="admin-hint">Ao editar, deixe em branco para manter a imagem atual.</p>
+        <label class="form-check"><input type="checkbox" name="published" /><span>Publicado (visível no site)</span></label>
+        <label class="form-field admin-field-narrow"><span>Ordem</span><input type="number" name="sort_order" value="0" /></label>
+        <div class="admin-form-actions">
+          <button type="submit" class="button button-light">Salvar</button>
+          <button type="button" id="gallery-cancel" class="button button-outline" hidden>Cancelar edição</button>
+        </div>
+        <p class="form-status" data-state="idle" role="status" aria-live="polite"></p>
+      </form>
+      <p class="admin-msg" data-state="loading" role="status" aria-live="polite">Carregando…</p>
+      <div class="admin-grid" hidden></div>
+    </section>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="../supabase-config.js?v=community-1"></script>
-  <script src="admin.js?v=community-1"></script>
+  <script src="admin.js?v=community-2"></script>
 </body>
 </html>
