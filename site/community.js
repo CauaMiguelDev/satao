@@ -206,4 +206,38 @@
         });
     }
   }
+
+  /* ---- Agenda dinâmica: substitui o conteúdo estático só se o admin já
+     publicou algo no painel; sem dados (ou sem Supabase configurado), o
+     placeholder fixo do HTML continua valendo. ---- */
+  var agendaList = document.querySelector(".agenda-list");
+  if (agendaList) {
+    var sbAgenda = getClient();
+    if (sbAgenda) {
+      sbAgenda
+        .from("agenda_items")
+        .select("title,event_date,description,location")
+        .eq("published", true)
+        .order("sort_order", { ascending: true })
+        .then(function (res) {
+          if (res.error) throw res.error;
+          var rows = res.data || [];
+          if (!rows.length) return;
+          agendaList.innerHTML = "";
+          rows.forEach(function (row) {
+            var art = document.createElement("article");
+            art.className = "agenda-item is-visible";
+            var dateLabel = row.event_date
+              ? new Date(row.event_date + "T00:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
+              : "";
+            art.innerHTML = '<div class="agenda-date"><strong></strong></div><div><h3></h3><p></p></div>';
+            art.querySelector(".agenda-date strong").textContent = dateLabel;
+            art.querySelector("h3").textContent = row.title;
+            art.querySelector("p").textContent = [row.description, row.location].filter(Boolean).join(" · ");
+            agendaList.appendChild(art);
+          });
+        })
+        .catch(function () {}); // mantém o placeholder estático em caso de erro
+    }
+  }
 })();

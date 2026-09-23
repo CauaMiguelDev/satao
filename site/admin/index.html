@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Painel · Gilmar Satão</title>
+<link rel="stylesheet" href="../style.css?v=community-1" />
+<link rel="stylesheet" href="admin.css?v=community-1" />
+</head>
+<body class="admin-body">
+  <div id="admin-login" class="admin-login">
+    <form id="login-form" class="admin-login-form" novalidate>
+      <h1 class="admin-brand">SATÃO<span class="admin-brand-reg">®</span></h1>
+      <p class="admin-login-sub">Painel administrativo</p>
+      <label class="form-field">
+        <span>E-mail</span>
+        <input type="email" name="email" required autocomplete="username" />
+      </label>
+      <label class="form-field">
+        <span>Senha</span>
+        <input type="password" name="password" required autocomplete="current-password" />
+      </label>
+      <button type="submit" class="button button-light">Entrar</button>
+      <p class="form-status" data-state="idle" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div id="admin-app" class="admin-app" hidden>
+    <header class="admin-header">
+      <h1 class="admin-brand">SATÃO<span class="admin-brand-reg">®</span> <small>painel</small></h1>
+      <button id="logout-btn" type="button" class="button button-outline">Sair</button>
+    </header>
+
+    <nav class="admin-tabs" role="tablist">
+      <button type="button" class="admin-tab is-active" data-tab="reviews" role="tab" aria-selected="true">Avaliações</button>
+      <button type="button" class="admin-tab" data-tab="photos" role="tab" aria-selected="false">Fotos da comunidade</button>
+      <button type="button" class="admin-tab" data-tab="agenda" role="tab" aria-selected="false">Agenda</button>
+    </nav>
+
+    <section class="admin-panel" data-panel="reviews">
+      <p class="admin-msg" data-state="loading" role="status" aria-live="polite">Carregando…</p>
+      <div class="admin-list" hidden></div>
+    </section>
+
+    <section class="admin-panel" data-panel="photos" hidden>
+      <p class="admin-msg" data-state="loading" role="status" aria-live="polite">Carregando…</p>
+      <div class="admin-grid" hidden></div>
+    </section>
+
+    <section class="admin-panel" data-panel="agenda" hidden>
+      <form id="agenda-form" class="admin-form">
+        <input type="hidden" name="id" />
+        <label class="form-field"><span>Título</span><input type="text" name="title" required /></label>
+        <label class="form-field"><span>Data</span><input type="date" name="event_date" /></label>
+        <label class="form-field"><span>Local</span><input type="text" name="location" /></label>
+        <label class="form-field"><span>Descrição</span><textarea name="description" rows="3"></textarea></label>
+        <label class="form-check"><input type="checkbox" name="published" /><span>Publicado (visível no site)</span></label>
+        <label class="form-field admin-field-narrow"><span>Ordem</span><input type="number" name="sort_order" value="0" /></label>
+        <div class="admin-form-actions">
+          <button type="submit" class="button button-light">Salvar</button>
+          <button type="button" id="agenda-cancel" class="button button-outline" hidden>Cancelar edição</button>
+        </div>
+        <p class="form-status" data-state="idle" role="status" aria-live="polite"></p>
+      </form>
+      <p class="admin-msg" data-state="loading" role="status" aria-live="polite">Carregando…</p>
+      <div class="admin-list" hidden></div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="../supabase-config.js?v=community-1"></script>
+  <script src="admin.js?v=community-1"></script>
+</body>
+</html>
