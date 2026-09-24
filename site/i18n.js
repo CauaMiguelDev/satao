@@ -36,7 +36,7 @@ window.SATAO_I18N = {
     "about.eyebrow": "About the artist",
     "about.title": "THE LINE IS WHO I AM.",
     "about.lead": "From Ceilândia to walls around the world. Three decades of street, ink and resistance became a craft, and the craft became a voice.",
-    "about.p1": "Journalist, educator and cultural producer, Satão is one of the oldest and most active voices in Brasília's Hip Hop scene. The wild-style line born in Ceilândia is now part of the city's visual memory.",
+    "about.p1": "For Satão, the line is identity before craft: a way of saying where he comes from and making Ceilândia visible across the whole city.",
     "about.p2": "More than signing walls, he signs presence: in workshops, in talks, in the cultural production that keeps moving the Federal District.",
     "about.caption.loc": "Ceilândia · Federal District",
 
@@ -213,7 +213,7 @@ window.SATAO_I18N = {
     "about.eyebrow": "À propos de l'artiste",
     "about.title": "LE TRAIT, C'EST QUI JE SUIS.",
     "about.lead": "De Ceilândia aux murs du monde entier. Trois décennies de rue, d'encre et de résistance sont devenues un métier, et le métier une voix.",
-    "about.p1": "Journaliste, éducateur et producteur culturel, Satão est l'une des voix les plus anciennes et actives de la scène Hip Hop de Brasília. Le trait wild-style né à Ceilândia fait aujourd'hui partie de la mémoire visuelle de la ville.",
+    "about.p1": "Pour Satão, le trait est une identité avant d'être un métier : une façon de dire d'où il vient et de rendre Ceilândia visible dans toute la ville.",
     "about.p2": "Plus que signer des murs, il signe une présence : dans l'atelier, dans la conférence, dans la production culturelle qui continue d'animer le District Fédéral.",
     "about.caption.loc": "Ceilândia · District Fédéral",
 

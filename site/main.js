@@ -8,7 +8,37 @@
     });
   }
 
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reduceMotion = motionPreference.matches;
+  motionPreference.addEventListener("change", function (event) {
+    reduceMotion = event.matches;
+    if (reduceMotion) {
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("is-visible"); });
+      document.querySelectorAll(".button").forEach(function (el) {
+        el.style.removeProperty("--mag-x"); el.style.removeProperty("--mag-y");
+      });
+      if (aboutPhoto) aboutPhoto.style.removeProperty("transform");
+      if (heroVideo) { videoPausedByUser = true; syncVideo(); }
+    }
+    onScroll();
+  });
+
+  // Efeitos contínuos só trabalham enquanto a seção está visível.
+  function whileVisible(element, callback) {
+    var visible = false;
+    function sync() { callback(visible && !document.hidden && !reduceMotion); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; sync(); }).observe(element);
+    } else { visible = true; sync(); }
+    document.addEventListener("visibilitychange", sync);
+    motionPreference.addEventListener("change", sync);
+  }
+  document.querySelectorAll(".hero, .insta, .reach").forEach(function (section) {
+    whileVisible(section, function (active) { section.classList.toggle("is-in-view", active); });
+  });
+  document.addEventListener("visibilitychange", function () {
+    document.documentElement.classList.toggle("page-hidden", document.hidden);
+  });
 
   /* ---- Reveal on scroll ---- */
   var revealItems = document.querySelectorAll(".reveal");
@@ -39,7 +69,7 @@
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.16 });
+    }, { threshold: 0.08 });
     revealItems.forEach(function (item) { revealObserver.observe(item); });
   }
 
@@ -78,6 +108,7 @@
 
   /* ---- Condense on scroll + reading-progress bar + back-to-top ---- */
   var progress = document.querySelector("[data-progress]");
+  var journey = document.querySelector(".timeline-list");
   var ticking = false;
 
   /* Parallax: o JS só publica o deslocamento em --py; o CSS decide como
@@ -121,6 +152,10 @@
       heroInner.style.opacity = "1";
     }
     if (!reduceMotion && parallaxItems.length) paintParallax(vh);
+    if (journey) {
+      var jr = journey.getBoundingClientRect();
+      journey.style.setProperty("--journey-progress", reduceMotion ? 1 : Math.min(1, Math.max(0, (vh * .68 - jr.top) / jr.height)).toFixed(4));
+    }
     ticking = false;
   }
   function onScroll() {
@@ -296,11 +331,13 @@
   if (cDot && cRing && finePointer && !reduceMotion) {
     var root = document.documentElement;
     var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    var rx = mx, ry = my, started = false;
+    var rx = mx, ry = my, started = false, cursorRAF = null;
     var interactive = "a,button,[role=button],input,textarea,select,.atuacao-card,.agenda-item,.inline-link,.hero-scroll,.gallery-item,.about-frame";
 
     document.addEventListener("mousemove", function (e) {
+      if (reduceMotion) return;
       mx = e.clientX; my = e.clientY;
+      if (cursorRAF === null) cursorRAF = window.requestAnimationFrame(cursorLoop);
       cDot.style.transform = "translate(" + mx + "px," + my + "px)";
       if (!started) {
         started = true;
@@ -326,9 +363,11 @@
       rx += (mx - rx) * 0.18;
       ry += (my - ry) * 0.18;
       cRing.style.transform = "translate(" + rx.toFixed(2) + "px," + ry.toFixed(2) + "px)";
-      window.requestAnimationFrame(cursorLoop);
+      cursorRAF = null;
+      if (!document.hidden && !reduceMotion && (Math.abs(mx - rx) > .1 || Math.abs(my - ry) > .1)) {
+        cursorRAF = window.requestAnimationFrame(cursorLoop);
+      }
     };
-    window.requestAnimationFrame(cursorLoop);
   }
 
   /* ---- Retrato "Sobre o artista": tilt 3D que segue o cursor ---- */
@@ -338,6 +377,7 @@
     var abTargetX = 0, abTargetY = 0, abTargetS = 1;
     var abCurX = 0, abCurY = 0, abCurS = 1, abRAF = null;
     var abStep = function () {
+      if (reduceMotion) { aboutPhoto.style.removeProperty("transform"); abRAF = null; return; }
       abCurX += (abTargetX - abCurX) * 0.14;
       abCurY += (abTargetY - abCurY) * 0.14;
       abCurS += (abTargetS - abCurS) * 0.14;
@@ -370,6 +410,7 @@
     allButtons.forEach(function (btn) {
       var mRAF = null, curX = 0, curY = 0, tgtX = 0, tgtY = 0;
       var mStep = function () {
+        if (reduceMotion || btn.disabled) { mRAF = null; return; }
         curX += (tgtX - curX) * 0.18;
         curY += (tgtY - curY) * 0.18;
         btn.style.setProperty("--mag-x", curX.toFixed(2) + "px");
@@ -393,9 +434,10 @@
   if (allButtons.length && !reduceMotion) {
     allButtons.forEach(function (btn) {
       btn.addEventListener("click", function (e) {
+        if (reduceMotion || btn.disabled) return;
         var r = btn.getBoundingClientRect();
-        btn.style.setProperty("--click-x", (e.clientX - r.left).toFixed(1) + "px");
-        btn.style.setProperty("--click-y", (e.clientY - r.top).toFixed(1) + "px");
+        btn.style.setProperty("--click-x", (e.detail ? e.clientX - r.left : r.width / 2).toFixed(1) + "px");
+        btn.style.setProperty("--click-y", (e.detail ? e.clientY - r.top : r.height / 2).toFixed(1) + "px");
         btn.classList.remove("is-clicked");
         void btn.offsetWidth; // reinicia a animação em cliques seguidos
         btn.classList.add("is-clicked");
@@ -442,7 +484,7 @@
 
     if (!reduceMotion && unit > 0) {
       track.style.willChange = "transform";
-      var pos = 0, base = 44, boost = 0, paused = false, last = null;
+      var pos = 0, base = 44, boost = 0, paused = false, last = null, tickerRAF = null, tickerActive = false;
       var prevY = window.scrollY || window.pageYOffset || 0;
 
       window.addEventListener("resize", function () { buildTicker(); pos = 0; last = null; });
@@ -460,13 +502,19 @@
         if (last === null) last = ts;
         var dt = Math.min((ts - last) / 1000, 0.05); last = ts;
         boost *= 0.92;
-        var speed = (paused ? 0 : base) + boost;
+        var speed = paused ? 0 : base + boost;
         pos -= speed * dt;
         if (unit > 0) { while (pos <= -unit) pos += unit; }
         track.style.transform = "translateX(" + pos.toFixed(2) + "px)";
-        window.requestAnimationFrame(tickerLoop);
+        tickerRAF = tickerActive ? window.requestAnimationFrame(tickerLoop) : null;
       };
-      window.requestAnimationFrame(tickerLoop);
+      whileVisible(ticker, function (active) {
+        tickerActive = active;
+        if (tickerRAF !== null) window.cancelAnimationFrame(tickerRAF);
+        tickerRAF = null; last = null;
+        track.style.willChange = active ? "transform" : "auto";
+        if (active) tickerRAF = window.requestAnimationFrame(tickerLoop);
+      });
     }
   }
 
@@ -499,7 +547,7 @@
       item.classList.toggle("is-hidden", !show);
       item.classList.remove("is-entering");
       if (show) {
-        item.style.setProperty("--stagger", Math.min(shown, 11) * 35 + "ms");
+        item.style.setProperty("--stagger", Math.min(shown, 6) * 30 + "ms");
         shown++;
       }
     });
@@ -530,6 +578,10 @@
     if (!galleryImgs.length) return;
     lbIndex = (i + galleryImgs.length) % galleryImgs.length;
     var src = galleryImgs[lbIndex];
+    if (!reduceMotion && lbImg.animate) {
+      lbImg.getAnimations().forEach(function (animation) { animation.cancel(); });
+      lbImg.animate([{ opacity: .35, transform: "scale(.985)" }, { opacity: 1, transform: "scale(1)" }], { duration: 240, easing: "cubic-bezier(.16,1,.3,1)" });
+    }
     lbImg.setAttribute("src", src.currentSrc || src.src);
     lbImg.setAttribute("alt", src.getAttribute("alt") || "");
     var fig = src.closest("figure");

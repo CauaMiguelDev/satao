@@ -18,7 +18,7 @@
   function getClient() {
     if (client) return client;
     var cfg = window.SATAO_SUPABASE;
-    if (!cfg || !cfg.url || !window.supabase) return null;
+    if (!cfg || !cfg.url || cfg.url.indexOf("SEU-PROJETO") !== -1 || !window.supabase) return null;
     client = window.supabase.createClient(cfg.url, cfg.anonKey);
     return client;
   }
@@ -209,7 +209,7 @@
   if (reviewsList) {
     var sbReviews = getClient();
     if (!sbReviews) {
-      setStatus(reviewsMsg, "error", t("review.list.error", "Não foi possível carregar as avaliações."));
+      setStatus(reviewsMsg, "empty", t("review.list.empty", "Ainda não há avaliações. Seja o primeiro a avaliar."));
     } else {
       sbReviews
         .from("reviews")
@@ -255,7 +255,7 @@
   if (galleryGrid) {
     var sb = getClient();
     if (!sb) {
-      setStatus(galleryMsg, "error", t("community.gallery.error", "Não foi possível carregar as fotos agora."));
+      setStatus(galleryMsg, "empty", t("community.gallery.empty", "Ainda não há fotos aprovadas. Seja o primeiro a compartilhar."));
     } else {
       sb.from("community_photos")
         .select("id,thumb_path,caption,author_name")
